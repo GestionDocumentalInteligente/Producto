@@ -50,5 +50,5 @@ git push origin main
 
 ---
 
-También podes usar VS Code, TraeIA y otros.
+También podes usar VS Code, TraeIA, supermaven y otros.
 Además para los momentos que necesitamos trabajar "ONLINE 100% podemos ir a https://hackmd.io/ o simplemente trabajar cualquier herramienta colaborativa)
