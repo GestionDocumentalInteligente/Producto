@@ -36,7 +36,7 @@ Este glosario proporciona definiciones de la terminología fundamental utilizada
 
 **Expediente** → Un conjunto de documentos necesarios para aprobar algo realizar un Acto Administrativo, tomar una decisión) dentro de la municipalidad.
 
-**Expediente electrónico** → Es el instrumento central  del sistema de Gestión Documental Inteligente (GDI). Permite integrar, organizar y tramitar digitalmente toda la documentación vinculada a un procedimiento administrativo, asegurando trazabilidad, transparencia y eficiencia. 
+**Expediente electrónico** → Es el instrumento central del sistema de Gestión Documental Inteligente (GDI). Permite integrar, organizar y tramitar digitalmente toda la documentación vinculada a un procedimiento administrativo, asegurando trazabilidad, transparencia y eficiencia.
 Cada expediente se compone de un conjunto de documentos digitales vinculados entre sí, firmados electrónicamente por los actores institucionales que intervienen, y almacenados de manera segura en el sistema.
 
 **Acto Administrativo** → Es una decisión oficial tomada por la municipalidad mediante el funcionario correspondiente. Puede ser desde un Decreto, una Resolución o un Permiso de Habilitación, son los "actos formales".

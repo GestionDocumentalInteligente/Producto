@@ -13,6 +13,7 @@ Este documento es la fuente de verdad central y el punto de partida para cualqui
 
 Esta documentación está dirigida a:
 
+
 * Desarrolladores de software (nuevos y existentes).
 * Ingenieros de QA (Quality Assurance).
 * Arquitectos de software.
