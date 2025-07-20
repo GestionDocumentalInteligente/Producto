@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+      "supabase-proyectoBaseGDI": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@supabase/mcp-server-supabase@latest",
+          "--access-token",
+          "sbp_7a43bf689a0a00cba2c192e8f7250b2b5f8be8c6",
+          "--project-ref",
+          "BaseGDI"
+        ]
+      }
+    }
+  }
