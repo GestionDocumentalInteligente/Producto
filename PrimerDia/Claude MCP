@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "n8n-mcp-local": {
+      "command": "npx",
+      "args": [
+        "n8n-mcp"
+      ],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "N8N_API_URL": "URL SERVIDOR N8N",
+        "N8N_API_KEY": "API KEY SERVIDOR N8N"
+      },
+      "enabled": true
+    },
+    "n8n-workflows": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://gitmcp.io/zie619/n8n-workflows"
+      ],
+      "enabled": true
+    },
+    "n8n-docs": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://gitmcp.io/arabold/docs-mcp-server"
+      ],
+      "enabled": true
+    }
+  }
+}
