@@ -6,14 +6,14 @@ Dejar una carpeta local sincronizada con el repositorio remoto **`GestionDocumen
 
 ---
 
-## 1. Crear la Carpeta Local
+## 1. Crear la Carpeta Locales
 
 1. Ir al Escritorio (o donde prefieras).
-2. Crear carpeta con nombre exacto: **`GDI-PRODUCTO`**
-   Ruta ejemplo: `C:\Users\TUUSUARIO\Desktop\GDI-PRODUCTO`
+2. Crear carpeta con nombre exacto: **`Carpeta Locales`**
+   Ruta ejemplo: `C:\Users\TUUSUARIO\Desktop\Carpeta Locales`
 3. Asegurarse de que esté vacía (si tenía cosas viejas, moverlas afuera).
 
-> *No usar espacios (evitá `GDI PRODUCTO`).*
+> *No usar otros nombres ni caracteres especiales (evitá, por ejemplo, 'LocalesGDI').*
 
 ---
 
@@ -26,7 +26,7 @@ Dejar una carpeta local sincronizada con el repositorio remoto **`GestionDocumen
 ### Pegar este bloque (reemplazando `TUUSUARIO` por el usuario real de Windows) y presionar **Enter**:
 
 ```powershell
-cd "C:\Users\TUUSUARIO\Desktop\GDI-PRODUCTO"
+cd "C:\Users\TUUSUARIO\Desktop\Carpeta Locales"
 
 # Si hubiera un repo previo, lo borramos para empezar limpio
 if (Test-Path .git) { Remove-Item -Recurse -Force .git }
@@ -44,7 +44,7 @@ if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force |
 
 Add-Content $PROFILE @'
 function gdi {
-    Set-Location "C:\Users\TUUSUARIO\Desktop\GDI-PRODUCTO"
+    Set-Location "C:\Users\TUUSUARIO\Desktop\Carpeta Locales"
     git pull --rebase origin main
     Write-Host "GDI actualizado" -ForegroundColor Green
 }
@@ -96,7 +96,7 @@ Eso trae la última versión (`git pull --rebase origin main`).
 
 ### 7. Resumen Ultra Corto
 
-1. Crear carpeta `GDI-PRODUCTO`.
+1. Crear carpeta `Carpeta Locales`.
 2. Ejecutar script (reemplazando `TUUSUARIO`).
 3. Cada día: `gdi`.
 4. Para subir: `git add .` → `git commit -m "msg"` → `git push origin main`.
