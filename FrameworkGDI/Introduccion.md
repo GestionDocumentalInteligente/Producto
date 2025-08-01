@@ -69,6 +69,17 @@ GDI aborda los desafíos identificados mediante un enfoque moderno y abierto, ce
 
 * **Modelo de Gobernanza Abierta y Colaborativa**: Distribuido bajo la licencia AGPLv3, GDI fomenta una comunidad activa de desarrolladores y usuarios. Este modelo de innovación abierta asegura la sostenibilidad, la evolución continua y la adaptación del sistema a las necesidades cambiantes, garantizando la soberanía digital y evitando el vendor lock-in.
 
+### Módulos principales del sistema 
+
+Los módulos principales son los pilares sobre los que se construye la gestión documental y organizacional de una ciudad. Cada uno representa un componente central del sistema, con funcionalidades específicas y profundas para la administración de recursos clave.
+
+###  Documentos
+El Módulo Documentos es el corazón de la gestión documental en GDI. Ofrece una gestión integral del ciclo de vida de todos los documentos, desde su creación hasta su archivo definitivo. Permite a los usuarios crear, editar, vincular  y buscar documentos. Asegura la integridad, autenticidad y trazabilidad de cada documento, garantizando un control riguroso sobre la información oficial.
+###  Expedientes
+El Módulo Expedientes es el contenedor digital para la gestión de trámites y procesos administrativos. Permite la gestión integral de expedientes creados por repartición o sector, incluyendo la capacidad de registrar actuaciones, realizar seguimiento de procesos, y gestionar todas las interacciones administrativas relacionadas. Facilita la colaboración inter-áreas y asegura la trazabilidad completa del ciclo de vida de cada trámite.
+###  Organigrama
+El Módulo Organigrama es la columna vertebral para la administración de la estructura interna de la municipalidad dentro del sistema. Su propósito fundamental es centralizar la gestión de usuarios, roles, reparticiones y la jerarquía organizacional, asegurando que el acceso y las responsabilidades se alineen con la estructura real de la entidad. Este módulo es esencial para mantener la coherencia operativa y la seguridad en todas las interacciones dentro del sistema.
+
 
 
 
