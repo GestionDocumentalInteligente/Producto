@@ -80,6 +80,13 @@ El Módulo Expedientes es el contenedor digital para la gestión de trámites y 
 ###  Organigrama
 El Módulo Organigrama es la columna vertebral para la administración de la estructura interna de la municipalidad dentro del sistema. Su propósito fundamental es centralizar la gestión de usuarios, roles, reparticiones y la jerarquía organizacional, asegurando que el acceso y las responsabilidades se alineen con la estructura real de la entidad. Este módulo es esencial para mantener la coherencia operativa y la seguridad en todas las interacciones dentro del sistema.
 
+<video width="99%" muted playsInline controls={true}>
+  <source
+    src="https://xguihxuzqibwxjnimxev.supabase.co/storage/v1/object/public/videos/docs/favorites.mp4"
+    type="video/mp4"
+  />
+</video>
+
 
 
 
