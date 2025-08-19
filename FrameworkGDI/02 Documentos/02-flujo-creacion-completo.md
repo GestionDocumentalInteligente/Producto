@@ -47,31 +47,20 @@ Una vez generado el documento en el Paso 1, el sistema redirige al usuario a la 
 
 ![Pantalla de edición del documento](../assets/images/docs/pantalla_edicion_documento.png)
 
-### Título del Documento
+## Referencia
 
 El campo "Referencia" ingresado en la modal se muestra prominentemente como el título principal del documento en esta pantalla, y el usuario puede volver a editarlo.
 
 ### Área de Contenido
 
-Se presenta un área central para la carga del contenido del documento.
+Se presenta un área central para la carga del contenido del documento. **Editor de texto enriquecido** con opciones de formato y barra de herramientas (tamaño, párrafo, negrita, cursiva, subrayado, etc.), permitiendo la redacción de contenido libre.
 
-#### Editor de texto enriquecido
 
-Opciones de formato y barra de herramientas (tamaño, párrafo, negrita, cursiva, subrayado, etc.), permitiendo la redacción de contenido libre.
+## Asistente de IA (Terra)
 
-#### Asistente de IA (Terra)
+En el lateral izquierdo, se observa un asistente de IA que guiará al usuario en la creación del documento sugiriéndole funcionalidades y opciones relevantes según el contexto. También proporciona recomendaciones sobre información clave a incluir como número de expediente, quién inicia el trámite, tema relacionado y documentos adjuntos.
 
-En el lateral izquierdo, se observa un asistente de IA ("¡Hola!, soy tu asistente para crear documentos oficiales.") que guía al usuario y ofrece funcionalidades como:
-
-- "Vamos a registrar juntos un documento adjunto en el sistema..."
-- "Usa el botón central para subir tu archivo..."
-- Sugiere información clave a incluir:
-  - Número de expediente
-  - Quién inicia el trámite
-  - Tema o evento relacionado
-  - Documentos adjuntos
-
-![Asistente de IA Terra](../assets/images/docs/asistente_ia_terra.png)
+![Asistente de IA Terra](../assets/images/docs/asistente_ia_terra.png.png)
 
 ### Panel Lateral Derecho (Configuración del Documento)
 
@@ -86,8 +75,10 @@ Se muestra el tipo de documento seleccionado (ej. "(IFE) Informe de elevación")
 
 ##### Sección para gestionar los firmantes del documento
 
-- **Selección de Firmantes**: campo para insertar usuarios
-- **Selección del Firmante Numerador**: campo para "Selecciona al firmante numerador"
+- **Buscador de Firmantes**: campo para insertar usuarios firmantes. Puede haber más de un firmante, no hay límite de cantidad.
+
+- **Selección del Firmante Numerador**: campo para insertar al único firmante numerador del documento.
+
 - **Notificar a (opcional)**: Campos para avisar a otros usuarios sobre dicho documento una vez finalizado el ciclo de firmas
 - **Vincular a un expediente (opcional)**: Campo que permite asociar el documento a un expediente existente una vez finalizado el ciclo de firmas
 
@@ -95,27 +86,26 @@ Se muestra el tipo de documento seleccionado (ej. "(IFE) Informe de elevación")
 
 ## Paso 3: Previsualización e Inicio del Proceso de Firmas
 
-En la parte inferior de la pantalla se encuentra el botón "Previsualizar", que permite al usuario revisar el documento antes de iniciar el proceso de firma.
+En la parte inferior de la pantalla se encuentra el botón "Previsualizar", que permite al usuario revisar el documento en cualquier momento siempre y cuando haya caracteres reales en referencia y cuerpo.
 
 ### Previsualización del Documento
 
-Una vez que el usuario ha completado la redacción o carga del contenido y ha asignado a todos los firmantes y al Numerador, presiona el botón "Previsualizar".
+Una vez que el usuario presiona el botón "Previsualizar":
+
+**Características de la previsualización:**
+
+* El sistema genera una vista previa del documento en formato PDF
+* Esta previsualización incluirá un encabezado provisional y una marca de agua "PREVISUALIZACIÓN" para indicar que el documento aún no es oficial. Esta marca de agua está presente hasta la primera firma, una vez que el primer firmante la realice desaparece esta marca de agua.
+* En el lateral izquierdo aparece un resumen de IA del contenido del documento desarrollado
 
 ![Botón de previsualización](../assets/images/docs/boton_previsualizacion%20(2).png)
 
-#### Características de la previsualización:
-
-- El sistema genera una vista previa del documento en formato PDF
-- Esta previsualización incluirá un encabezado provisional y una marca de agua "PREVISUALIZACIÓN" para indicar que el documento aún no es oficial
-- Incluiría un resumen de AI del contenido del documento desarrollado
-
-> **Nota**: La marca de agua "PREVISUALIZACIÓN" solo está presente en la previsualización antes de la primera firma. Una vez que el primer firmante firma, la marca de agua desaparece, pero el encabezado sigue siendo provisional hasta que el numerador firma y se asignan la fecha y el número oficial.
 
 ### Validación e inicio del circuito
 
-Si la previsualización es correcta, el usuario procede a iniciar el proceso de firmas. Si se encuentra dentro de los firmantes y en ese momento le corresponde firmar, procede a firmar.
+Si la previsualización es válida , el usuario procede a iniciar el proceso de firmas. Si se encuentra dentro de los firmantes y en ese momento le corresponde firmar, procede a firmar. 
 
-- GDI realiza las verificaciones finales e inicia el circuito de firmas, orquestando el proceso según el orden y tipo de firma definidos
+-GDI realiza las verificaciones finales e inicia el circuito de firmas, orquestando el proceso según el tipo de firma definidos. 
 - El documento pasa al estado `awaiting_signatures` y se notifica en su panel de documentos a los firmantes correspondientes
 
 ![Vista previa del PDF](../assets/images/docs/vista_previa_pdf.png)
@@ -131,7 +121,7 @@ Una vez que el usuario presiona "Iniciar proceso de Firmas", ocurre la transici�
 - **Estado del documento**: `draft` (En Edición) → `awaiting_signatures` (Esperando Firmas)
 - **Bloqueo de edición**: El documento se vuelve inmediatamente **no editable** para todos los usuarios
 - **Encabezado**: Aparece el encabezado provisional (sin marca de agua "PREVISUALIZACIÓN")
-- **Aparición en paneles**: Los firmantes ven el documento en su panel de documentos pendientes
+- **Aparición en paneles**: Los firmantes ven el documento en su tabla de documentos pendientes.
 
 ![Estado esperando firmas](../assets/images/docs/Evolución_estados_encabezados.png)
 
