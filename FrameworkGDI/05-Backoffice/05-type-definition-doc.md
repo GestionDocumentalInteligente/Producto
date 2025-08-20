@@ -7,7 +7,8 @@ La Configuración de Documentos permite a los Super-Administradores definir y pe
 ### Objetivos principales:
 
 - **Definir tipos oficiales**: Establecer qué tipos de documentos pueden crear los usuarios del sistema
-- **Configurar firma**: Determinar quién (según organigrama) y qué tipo de firmas debe solicitar
+- **Configurar firma**: Determinar quién o quienes (según organigrama)y que tipo de firmas debe solicitar.
+
 - **Asegurar cumplimiento normativo**: Garantizar que los documentos cumplan con las regulaciones locales
 - **Facilitar la gestión**: Proveer plantillas listas para usar y configuraciones personalizadas
 
@@ -43,12 +44,18 @@ Existen dos vías principales para configurar un nuevo tipo de documento en GDI:
 
 ### 3.1 Vía 1: Creación desde Cero
 
-- **Propósito**: Permite personalizar completamente un nuevo tipo de documento, adaptándolo a necesidades muy específicas de la municipalidad (ej. flujos de trabajo particulares, requerimientos normativos únicos).
+**Propósito**: Permite personalizar completamente un nuevo tipo de documento, adaptándolo a necesidades muy específicas de la municipalidad (ej. documentos  particulares, requerimientos normativos únicos).
+
 
 - **Proceso**:
-  1. **Selección de Vía**: El administrador elige "Crear desde Cero"
-  2. **Definición de Parámetros**: Se completan todos los campos del objeto DocumentTypeDefinition (identificación, comportamiento, permisos y firma)
-  3. **Guardado y Activación**: Se guarda el nuevo tipo, que puede quedar en estado "Borrador" para revisión o "Activo" para uso inmediato
+
+  1. **Selección de Vía**: El administrador elige "Crear desde Cero".
+
+  2. **Definición de Parámetros**: Se completan todos los campos del objeto DocumentTypeDefinition (identificación, comportamiento, permisos y firma).
+
+  3. **Validación**: El sistema valida que el acrónimo no exista en ese ecosistema ni en la tabla global.
+
+  4. **Guardado y Activación**: Se guarda el nuevo tipo, que puede quedar en estado "Borrador" para revisión o "Activo" para uso inmediato.
 
 ### 3.2 Vía 2: Uso de Plantillas Pre-configuradas
 
