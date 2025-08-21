@@ -1,81 +1,299 @@
-# Módulo Documentos GDI
+# 📋 Módulo Documentos GDI - Introducción y Casos de Uso
 
-## Índice
+## ¿Qué es el Módulo Documentos?
 
-1. ¿Qué es el Módulo Documentos?
-2. Casos de Uso Clave
+El Módulo Documentos es el **núcleo central** de GDI, diseñado para la creación, gestión, colaboración y formalización de documentos electrónicos con **plena validez legal**. Va más allá del expediente tradicional, habilitando flujos colaborativos y dinámicos entre múltiples departments.
 
-## 1. ¿Qué es el Módulo Documentos?
+### Definición de Documento en GDI
 
-El módulo de Documentos es el **corazón de GDI**, diseñado para la creación, gestión, colaboración y formalización de documentos electrónicos con plena validez legal. Se divide en dos aspectos clave: su configuración en el Backoffice y su uso operativo por parte de los usuarios.
+Un **Documento** es cualquier entidad digitalizada que contiene información estructurada o no estructurada (texto, imágenes, tablas, etc.), generada o incorporada al sistema, con un propósito definido y que puede **adquirir validez legal** mediante procesos de firma y numeración.
 
-### Definición de Documento
+Es la unidad fundamental de información sobre la cual se construyen los expedientes y las comunicaciones oficiales.
 
-**Un Documento es:**
-Cualquier entidad digitalizada que contiene información estructurada o no estructurada (texto, imágenes, tablas, etc.), generada o incorporada al sistema, con un propósito definido y que puede adquirir validez legal mediante procesos de firma y numeración. Es la unidad fundamental de información sobre la cual se construyen los expedientes y las comunicaciones.
+## 🎯 Propuesta de Valor Técnica
 
-### Características Principales
+### Características Diferenciadoras
 
-- ✅ **Validez legal**: Documentos electrónicos con plena validez jurídica
-- ✅ **Colaboración**: Edición y revisión colaborativa antes de formalizar
-- ✅ **Trazabilidad**: Control riguroso sobre la información oficial
-- ✅ **Integración**: Base para expedientes y comunicaciones
-- ✅ **Seguridad**: Integridad, autenticidad y control de acceso
+- **📝 Editor Colaborativo Nativo**: Múltiples usuarios pueden editar simultáneamente el mismo documento en tiempo real
+- **🔄 Gestión Inteligente de Rechazos**: Sistema robusto de correcciones y mejoras iterativas
+- **🗄️ Preservación de Integridad**: Eliminación lógica que mantiene trazabilidad histórica
+- **⚖️ Validez Legal Garantizada**: Solo documentos en estado `signed` tienen plena validez jurídica
+- **🏛️ Integración Organizacional**: Respeta la estructura de departments y jerarquías municipales
 
-## 2. Casos de Uso Clave
+### Arquitectura Dual de Documentos
 
-| Funcionalidad | Descripción |
-|---------------|-------------|
-| **Creación de Documentos** | Generación de nuevos documentos a partir de tipos predefinidos. |
-| **Asistente de Redacción Inteligente** | Soporte de IA para la redacción, generación de contenido y adjuntos relevantes. |
-| **Gestión de Permisos y Acceso** | Roles: Editor, Comentador, Lector, Sin acceso. |
-| **Asignación y Flujo de Firmas** | Orquestación del proceso de firma digital/electrónica, selección de firmantes y numerador. |
-| **Previsualización Dinámica** | Vistas previas en diferentes estados, con encabezados y marcas de agua según el estado. |
-| **Numeración y Finalización** | Asignación de identificadores únicos y sellado del documento al firmar el numerador. |
-| **Post-firma** | Acciones tras la finalización: solo lectura, descarga, impresión, vinculación a expediente. |
+El sistema implementa una **separación clara** entre documentos en proceso y documentos oficiales:
 
-### Tipos de Usuarios y Roles
+**`document_draft`** → Documentos en creación, edición y firma  
+**`official_documents`** → Documentos finalizados con validez legal
 
-#### **Creador del Documento**
-- Inicia el proceso de creación
-- Configura firmantes y numerador
-- Puede editar hasta iniciar el circuito de firmas
+![Arquitectura Dual Documentos](./images/arquitectura-dual-documentos.png)
 
-#### **Firmantes Intermedios**
-- Revisan y firman el documento
-- Acceso de solo lectura durante su turno
-- Pueden rechazar y devolver a edición
+## 🔄 Estados del Documento - Implementación Real
 
-#### **Numerador (Firmante Final)**
-- Última firma del circuito
-- Activa la numeración oficial
-- Otorga validez legal definitiva
-
-#### **Usuarios con Permisos ACL**
-- Acceso mediante función "Compartir"
-- Niveles: Editor, Comentador, Lector
-- Solo durante estado "En Edición"
-
-### Ciclo de Vida de un Documento
-
+### Estados Principales
 ```
-Creación → Edición → Previsualización → Circuito de Firmas → Documento Oficial
-   ↓           ↓             ↓                ↓                     ↓
- Draft    Colaboración   Validación    Orquestación            Signed
+📝 draft → 📤 sent_to_sign → ✅ signed → 📦 archived
+   ↓           ↓              ↑
+   🗑️ deleted  ❌ rejected → 🔄 (corrección)
+               ↓
+              🚫 cancelled
 ```
 
-### Validez Legal
+### Descripción de Estados
 
-**Un Documento Oficial** es aquel que ha completado exitosamente el proceso de formalización y cuenta con dos elementos que le otorgan **validez legal**:
+| Estado | Descripción | Acciones Permitidas |
+|--------|-------------|-------------------|
+| **`draft`** | En edición colaborativa | Editar contenido, asignar firmantes |
+| **`sent_to_sign`** | Enviado al circuito de firmas | Firmar, rechazar, observaciones |
+| **`signed`** | Firmado y con validez legal | Solo lectura, descarga, archivo |
+| **`rejected`** | Rechazado por algún firmante | Revisar motivos, corregir, reenviar |
+| **`cancelled`** | Cancelado antes de completar | Solo consulta histórica |
+| **`archived`** | Archivado post-finalización | Solo consulta, no modificable |
 
-- 🔢 **Número Oficial**: Identificador único `<TIPO>-<AAAA>-<NNNNNN>-<SIGLA_ECO>-<SIGLA_REPARTICIÓN>`
-- ✍️ **Firma del Numerador**: Certificación digital que oficializa el documento
+![Diagrama Estados Documentos](./images/estados-documentos-flujo.png)
 
-> **Importante**: Solo los documentos en estado `signed` tienen plena validez legal.
+## 👥 Editor Colaborativo
 
-## Enlaces Relacionados
+### Concepto de `pad_id`
 
-- [Flujo de Creación Completo](./02-flujo-creacion-completo.md)
-- [Estados y Transiciones](./03-estados-transiciones.md)
-- [Numeración y Nomenclatura](./04-numeracion-nomenclatura.md)
-- [Acceso y Permisos](./05-acceso-permisos.md)
+Cada documento recibe un **identificador único de pad colaborativo** que permite:
+
+- **✏️ Edición simultánea** de múltiples usuarios
+- **🔄 Sincronización en tiempo real** de cambios
+- **📝 Historial de versiones** durante la edición
+- **👀 Indicadores de presencia** de editores activos
+
+### Flujo de Colaboración
+
+1. **Creación**: Usuario crea documento → se asigna `pad_id` único
+2. **Invitación**: Otros usuarios acceden via permisos del department
+3. **Edición**: Cambios se sincronizan automáticamente
+4. **Finalización**: Al enviar a firma, se congela el contenido
+
+![Editor Colaborativo](./images/editor-colaborativo-flujo.png)
+
+## ❌ Gestión de Rechazos y Correcciones
+
+### Sistema de Rechazos (`document_rejections`)
+
+Cuando un firmante rechaza un documento:
+
+1. **📋 Registro del rechazo** con motivo detallado
+2. **🔄 Cambio de estado** a `rejected`
+3. **📧 Notificación** al creador y equipo
+4. **🛠️ Proceso de corrección** habilitado
+
+### Tabla de Rechazos
+```sql
+document_rejections:
+- rejection_id (UUID)
+- document_id (referencia al documento)
+- rejected_by (usuario que rechaza)
+- reason (motivo del rechazo)
+- rejected_at (timestamp)
+```
+
+### Flujo de Corrección
+
+![Flujo Rechazos Correcciones](./images/flujo-rechazos-correcciones.png)
+
+## 🗑️ Eliminación: Lógica vs Física
+
+### Eliminación Lógica (Implementada)
+
+**Campo**: `is_deleted = true`
+
+**Ventajas**:
+- ✅ **Preserva integridad** histórica
+- ✅ **Mantiene trazabilidad** para auditorías
+- ✅ **Permite recuperación** si es necesario
+- ✅ **Cumple normativas** de preservación documental
+
+### Eliminación Física (NO Implementada)
+
+**Razón**: Los documentos oficiales municipales deben preservarse por normativas legales.
+
+### Reglas de Eliminación
+
+| Estado Documento | Eliminación Permitida | Observaciones |
+|-----------------|---------------------|---------------|
+| `draft` | ✅ Lógica | Marca como eliminado, preserva para auditoría |
+| `sent_to_sign` | ❌ No permitida | Debe cancelarse formalmente |
+| `signed` | ❌ Nunca | Documento oficial, preservación obligatoria |
+| `rejected` | ✅ Lógica | Después de proceso de corrección |
+
+## 🏛️ Integración con Departments
+
+### Estructura Organizacional
+
+El módulo respeta la jerarquía municipal implementada:
+
+```
+municipalities
+    ↓
+departments (secretarías, direcciones)
+    ↓
+sectors (áreas específicas)
+    ↓
+users (empleados, funcionarios)
+```
+
+### Permisos por Department
+
+- **`enabled_document_types_by_department`**: Define qué tipos puede usar cada department
+- **`document_types_allowed_by_rank`**: Controla qué jerarquías pueden firmar cada tipo
+
+![Integración Departments](./images/integracion-departments.png)
+
+## 📊 Casos de Uso Principales
+
+### 1. Creación de Documento Colaborativo
+
+**Actor**: Empleado municipal  
+**Objetivo**: Crear documento oficial con colaboración de equipo
+
+**Flujo**:
+1. Selecciona tipo de documento autorizado para su department
+2. Define referencia/motivo del documento
+3. Sistema asigna `pad_id` para colaboración
+4. Invita colegas para edición colaborativa
+5. Finaliza contenido y configura firmantes
+
+**Resultado**: Documento en estado `draft` listo para firma
+
+### 2. Proceso de Firma Secuencial
+
+**Actor**: Firmantes asignados  
+**Objetivo**: Formalizar documento con firmas ordenadas
+
+**Flujo**:
+1. Documento llega con estado `sent_to_sign`
+2. Firmante revisa contenido (solo lectura)
+3. Decide: Firmar ✅ o Rechazar ❌
+4. Si rechaza: ingresa motivo detallado
+5. Sistema progresa al siguiente firmante o finaliza
+
+**Resultado**: Documento `signed` o `rejected`
+
+### 3. Gestión de Rechazo y Corrección
+
+**Actor**: Creador del documento  
+**Objetivo**: Corregir documento rechazado
+
+**Flujo**:
+1. Recibe notificación de rechazo
+2. Revisa motivos en `document_rejections`
+3. Reactiva editor colaborativo
+4. Realiza correcciones necesarias
+5. Reenvía a circuito de firmas
+
+**Resultado**: Nueva versión mejorada del documento
+
+### 4. Numeración y Oficialización
+
+**Actor**: Numerador (último firmante)  
+**Objetivo**: Asignar número oficial y finalizar
+
+**Flujo**:
+1. Recibe documento para numeración final
+2. Sistema reserva número en `numeration_requests`
+3. Firma y confirma numeración
+4. Genera `official_documents` entry
+5. Crea PDF firmado oficial
+
+**Resultado**: Documento con validez legal plena
+
+### 5. Consulta de Documentos Oficiales
+
+**Actor**: Empleado municipal o ciudadano  
+**Objetivo**: Acceder a documento oficial
+
+**Flujo**:
+1. Busca por número oficial o criterios
+2. Sistema valida permisos de acceso
+3. Muestra documento desde `official_documents`
+4. Permite descarga de PDF firmado
+
+**Resultado**: Acceso controlado a documento oficial
+
+## 🔧 Componentes Técnicos Principales
+
+### Motor de Edición
+- **Document Editor Engine**: Editor enriquecido colaborativo
+- **Pad Synchronization Service**: Sincronización en tiempo real
+
+### Gestión de Firmas
+- **Signing Workflow Orchestrator**: Orquestador del flujo de firmas
+- **Signature Validation Service**: Validación de firmas digitales
+
+### Numeración Oficial
+- **OFFICIAL NUMBER Service**: Servicio de numeración secuencial
+- **Concurrency Control**: Control de concurrencia para números únicos
+
+### Inteligencia Artificial
+- **AI Drafting Assistant (Terra)**: Asistente para redacción
+- **Content Analysis**: Análisis y sugerencias de contenido
+
+## 🔍 Trazabilidad y Auditoría
+
+### Campos de Auditoría
+
+Todas las tablas incluyen:
+- **`audit_data`** (JSONB): Metadatos de cambios
+- **Timestamps**: Creación, modificación, firma
+- **User tracking**: Quién realizó cada acción
+
+### Historial Completo
+
+- ✅ **Creación**: Usuario, timestamp, department
+- ✅ **Ediciones**: Cambios en editor colaborativo
+- ✅ **Firmas**: Orden, timestamps, certificados
+- ✅ **Rechazos**: Motivos, usuarios, correcciones
+- ✅ **Numeración**: Proceso oficial, validaciones
+
+## 🎖️ Validez Legal
+
+### Requisitos para Validez Legal
+
+Un documento alcanza **plena validez legal** cuando:
+
+1. ✅ **Estado**: `signed`
+2. ✅ **Número oficial**: Asignado en `official_documents`
+3. ✅ **Numerador**: Firmado por usuario autorizado
+4. ✅ **PDF firmado**: Generado y almacenado
+5. ✅ **Trazabilidad**: Historial completo de firmas
+
+### Formato de Número Oficial
+
+```
+<TIPO>-<AAAA>-<NNNNNN>-<SIGLA_ECO>-<SIGLA_DEPARTMENT>
+```
+
+**Ejemplo**: `DECRE-2025-000123-TN-INTEN`
+- DECRE: Tipo (Decreto)
+- 2025: Año
+- 000123: Número correlativo
+- TN: Municipio (Terranova)
+- INTEN: Department numerador (Intendencia)
+
+## 🚀 Beneficios del Sistema
+
+### Para Empleados Municipales
+- **⚡ Colaboración eficiente**: Editor en tiempo real
+- **🔄 Proceso claro**: Estados y flujos definidos
+- **❌ Gestión de errores**: Sistema robusto de correcciones
+- **📱 Acceso universal**: Desde cualquier dispositivo
+
+### Para la Municipalidad
+- **⚖️ Validez legal garantizada**: Cumplimiento normativo
+- **📊 Trazabilidad completa**: Auditoría total del proceso
+- **💰 Eficiencia operativa**: Reducción de tiempos y errores
+- **🔐 Seguridad robusta**: Control de acceso granular
+
+### Para los Ciudadanos
+- **🔍 Transparencia**: Acceso controlado a documentos públicos
+- **⏱️ Agilidad**: Procesos más rápidos
+- **✅ Confiabilidad**: Documentos con validez legal certificada
+
+---
