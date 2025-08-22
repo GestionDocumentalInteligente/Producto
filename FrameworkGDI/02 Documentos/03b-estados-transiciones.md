@@ -1,6 +1,6 @@
 # 🔀 Estados y Transiciones de Documentos - Implementación Real
 
-Este documento define los estados oficiales implementados en la base de datos de GDI y las reglas de transición entre ellos, basado en la estructura real de Supabase.
+Este documento define los estados oficiales implementados en la base de datos de GDI y las reglas de transición entre ellos.
 
 ## 📊 Estados Principales del Documento
 
@@ -656,4 +656,3 @@ ORDER BY dr.rejected_at DESC;
 
 ---
 
-**📝 Nota**: Este documento refleja la implementación real de estados en Supabase. Todos los ENUMs, transiciones y validaciones están basados en la estructura actual de la base de datos del proyecto GDI.

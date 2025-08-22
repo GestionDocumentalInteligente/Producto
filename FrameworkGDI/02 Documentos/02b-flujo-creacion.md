@@ -544,5 +544,3 @@ sequenceDiagram
 ![Métricas Monitoreo](../images/metricas-monitoreo.png)
 
 ---
-
-**📝 Nota**: Este flujo refleja la implementación real basada en la estructura de Supabase. Todas las tablas, campos y estados mencionados corresponden a la base de datos actual del proyecto GDI.
