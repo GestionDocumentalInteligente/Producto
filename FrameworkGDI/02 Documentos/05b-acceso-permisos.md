@@ -1,6 +1,6 @@
 # 🔐 Reglas de Acceso y Permisos - Estado Real del Sistema
 
-
+El sistema de acceso y permisos de GDI está diseñado para garantizar la seguridad y privacidad de los documentos, mientras permite la colaboración necesaria entre usuarios y reparticiones. El control se basa en la pertenencia organizacional, el estado del documento y permisos específicos otorgados.
 
 ## 📊 Estado Actual de Implementación
 
@@ -47,7 +47,7 @@ user_sector_permissions               ✅ Permisos adicionales por sector
 
 ### 7.1 Acceso por Pertenencia (IMPLEMENTADO)
 
-**Regla Base**: Usuarios de un department ven únicamente los documentos de su department.
+**Regla Base**: Usuarios de una reparticion ven únicamente los documentos de su reparticion (department)
 
 **Implementación en BD:**
 ```sql
@@ -72,7 +72,7 @@ WHERE creator_dept.department_id = (
 
 ### 7.2 Búsqueda General (IMPLEMENTADO)
 
-**Regla**: Los documentos de otros departments solo son accesibles mediante búsqueda por número oficial cuando están en estado `signed`.
+**Regla**: Los documentos de otras reparticiones solo son accesibles mediante búsqueda por número oficial cuando están en estado `signed`.
 
 **Implementación en BD:**
 ```sql
