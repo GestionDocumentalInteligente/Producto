@@ -1,6 +1,6 @@
 # 🔢 Sistema de Numeración y Nomenclatura Oficial - Implementación Real
 
-El sistema de numeración de GDI garantiza la asignación única y secuencial de números oficiales a documentos con validez legal, basado en la implementación real de Supabase.
+El sistema de numeración de GDI garantiza la asignación única y secuencial de números oficiales a documentos con validez legal.
 
 ## 🎯 Objetivo del Sistema
 
@@ -705,5 +705,3 @@ INSERT INTO municipality_numeration_config VALUES
 ```
 
 ---
-
-**📝 Nota**: Este documento refleja la implementación real del sistema de numeración en Supabase, incluyendo todas las tablas, procedimientos y validaciones actualmente implementadas en el proyecto GDI.
