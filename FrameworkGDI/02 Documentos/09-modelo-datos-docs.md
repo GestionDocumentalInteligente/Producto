@@ -1,15 +1,3 @@
-¡Entendido! Tomo el contenido exacto de tu archivo de GitHub y lo fusiono con la información detallada de los campos JSONB para crear un único documento completo y coherente.
-
-La estructura que seguiré es:
-1.  Mantener intacta toda tu sección de tablas relacionales.
-2.  Añadir comentarios en las definiciones de las tablas (`CREATE TABLE`) para referenciar la nueva sección de JSONB.
-3.  Crear una nueva sección principal dedicada exclusivamente a detallar la estructura de cada campo JSONB.
-4.  Enriquecer las secciones de "Consultas Útiles" y "Validaciones" con ejemplos y recomendaciones específicas para JSONB.
-
-Aquí tienes el documento completo, listo para reemplazar el contenido de tu archivo en GitHub.
-
----
----
 
 # 📊 Módulo Documentos - Modelo de Datos Completo
 
