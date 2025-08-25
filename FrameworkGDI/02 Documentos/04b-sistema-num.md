@@ -1,4 +1,4 @@
-# 🔢 Sistema de Numeración y Nomenclatura Oficial - Implementación Real
+# 🔢 Sistema de Numeración y Nomenclatura Oficial - Implementación 
 
 El sistema de numeración de GDI garantiza la asignación única y secuencial de números oficiales a documentos con validez legal.
 
@@ -34,8 +34,6 @@ RESOL-2025-000045-TN-SECGOB   (Resolución de Secretaría de Gobierno)
 DISP-2025-000067-TN-DIROBR    (Disposición de Dirección de Obras)
 IF-2025-001234-TN-SECGOB      (Informe de Secretaría de Gobierno)
 ```
-
-![Formato Numeración](../images/formato-numeracion-oficial.png)
 
 ---
 
@@ -83,8 +81,6 @@ CREATE TYPE validation_status_enum AS ENUM (
     'invalid'     -- Número invalidado por error
 );
 ```
-
-![Arquitectura Numeración](../images/arquitectura-numeracion.png)
 
 ---
 
@@ -176,9 +172,6 @@ WHERE document_id = ?;
 
 COMMIT;
 ```
-
-![Proceso Numeración](../images/proceso-numeracion-completo.png)
-
 ---
 
 ## 🔐 Control de Concurrencia
@@ -241,8 +234,6 @@ WHERE validation_status = 'pending'
   AND is_confirmed = false;
 ```
 
-![Control Concurrencia](../images/control-concurrencia-numeracion.png)
-
 ---
 
 ## 📊 Tipos de Numeración por Categoría
@@ -302,8 +293,6 @@ WHERE dt.document_type_id = ?
   AND dt.last_paper_number IS NULL; -- No es acto administrativo
 ```
 
-![Tipos Numeración](../images/tipos-numeracion-categoria.png)
-
 ---
 
 ## 🏛️ Asignación de Department Numerador
@@ -346,9 +335,6 @@ SELECT EXISTS (
       AND dtar.document_type_id = ?        -- tipo documento
 ) as can_numerize;
 ```
-
-![Asignación Department](../images/asignacion-department-numerador.png)
-
 ---
 
 ## 🔍 Consultas y Búsquedas
@@ -397,8 +383,6 @@ WHERE CAST(nr.reserved_number AS INTEGER) BETWEEN ? AND ?
   AND nr.year = ?
 ORDER BY CAST(nr.reserved_number AS INTEGER);
 ```
-
-![Búsquedas Numeración](../images/busquedas-numeracion.png)
 
 ---
 
@@ -450,8 +434,6 @@ JOIN document_types dt ON nr.document_type_id = dt.document_type_id
 WHERE nr.reserved_at >= (NOW() - INTERVAL '30 days')
 GROUP BY dt.document_type_id, dt.name;
 ```
-
-![Métricas Numeración](../images/metricas-numeracion.png)
 
 ---
 
@@ -578,8 +560,6 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-![Gestión Errores](../images/gestion-errores-numeracion.png)
-
 ---
 
 ## 🔧 Administración del Sistema
@@ -674,8 +654,6 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-![Administración Sistema](../images/administracion-numeracion.png)
-
 ---
 
 ## 📋 Configuración por Municipality
@@ -693,7 +671,6 @@ CREATE TABLE municipality_numeration_config (
     created_at TIMESTAMP DEFAULT NOW()
 );
 ```
-
 ### Templates de Numeración
 
 ```sql

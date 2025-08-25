@@ -154,7 +154,7 @@ users (empleados, funcionarios)
 **Objetivo**: Crear documento oficial con colaboración de equipo
 
 **Flujo**:
-1. Selecciona tipo de documento autorizado para su department
+1. Selecciona tipo de documento para su confección
 2. Define referencia/motivo del documento
 3. Sistema asigna `pad_id` para colaboración
 4. Invita colegas para edición colaborativa
@@ -283,7 +283,6 @@ Un documento alcanza **plena validez legal** cuando:
 - **⚡ Colaboración eficiente**: Editor en tiempo real
 - **🔄 Proceso claro**: Estados y flujos definidos
 - **❌ Gestión de errores**: Sistema robusto de correcciones
-- **📱 Acceso universal**: Desde cualquier dispositivo
 
 ### Para la Municipalidad
 - **⚖️ Validez legal garantizada**: Cumplimiento normativo

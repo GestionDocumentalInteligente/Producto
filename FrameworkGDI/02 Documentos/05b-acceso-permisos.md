@@ -4,8 +4,6 @@ El sistema de acceso y permisos de GDI está diseñado para garantizar la seguri
 
 ## 📊 Estado Actual de Implementación
 
-### ✅ **IMPLEMENTADO EN SUPABASE:**
-
 #### Estructura Organizacional
 ```sql
 -- Tablas existentes verificadas
@@ -51,7 +49,7 @@ user_sector_permissions               ✅ Permisos adicionales por sector
 
 **Implementación en BD:**
 ```sql
--- Estructura real en Supabase
+-- Estructura 
 users.sector_id → sectors.sector_id
 sectors.department_id → departments.department_id
 
