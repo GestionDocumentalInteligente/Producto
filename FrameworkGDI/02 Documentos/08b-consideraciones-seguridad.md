@@ -141,27 +141,6 @@ CONSTRAINT unique_reserved_number UNIQUE (reserved_number)
 
 ---
 
-## ⚠️ Limitaciones de Seguridad Actuales
-
-### Casos No Contemplados
-
-**1. Ausencias de Firmantes:**
-- Sin sistema de delegación temporal
-- Sin escalación automática por inactividad
-- Requiere intervención manual para resolución
-
-**2. Editor Colaborativo:**
-- Campo `pad_id` preparado pero sin implementación de tiempo real
-- Riesgo de sobreescritura si múltiples usuarios editan
-- Sin indicadores de presencia de otros editores
-
-**3. Timeouts de Proceso:**
-- Sin límites de tiempo configurables
-- Sin alertas por documentos estancados
-- Acumulación potencial de procesos inactivos
-
----
-
 ## 🛡️ Medidas de Protección Implementadas
 
 ### Integridad de Datos
