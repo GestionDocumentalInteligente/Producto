@@ -11,15 +11,9 @@ El flujo de creación de expedientes involucra múltiples entidades que trabajan
 
 ### Flujo de Datos durante la Creación
 
-```
-[Usuario] → [Validación] → [Expediente] 
-    ↓            ↓             ↓            
-[Permisos]   [Tipos]    [Repartición]   
-```
-
-→ [Numeración] → [Carátula] → [Vinculación]
-        ↓           ↓           ↓
-  [Secuencial] [Documento] [Bidireccional]
+[Usuario] → [Validación] → [Expediente] → [Numeración] → [Carátula] → [Vinculación]  
+    ↓            ↓             ↓            ↓            ↓            ↓  
+[Permisos]   [Tipos]    [Repartición]   [Secuencial] [Documento] [Bidireccional]
 
 ### Estructura de Datos Implementada
 
