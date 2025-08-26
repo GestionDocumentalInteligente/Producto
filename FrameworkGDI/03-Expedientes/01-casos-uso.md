@@ -4,7 +4,7 @@
 
 El módulo de Expedientes es el contenedor digital central de GDI que organiza y gestiona el ciclo de vida completo de los trámites administrativos. Facilita la colaboración entre áreas y promueve una interacción más eficiente con los ciudadanos.
 
-**Un Expediente electrónico** es un conjunto de documentos digitales vinculados entre sí que documentan un procedimiento administrativo específico, desde su inicio hasta su resolución, asegurando trazabilidad, transparencia y eficiencia.
+**Un Expediente electrónico** (EE) es un conjunto de documentos digitales vinculados entre sí que documentan un procedimiento administrativo específico, desde su inicio hasta su resolución, asegurando trazabilidad, transparencia y eficiencia.
 
 GDI va más allá del expediente tradicional, rompiendo con la lógica lineal de tramitación, habilitando flujos simultáneos, colaborativos y dinámicos entre múltiples sectores.
 

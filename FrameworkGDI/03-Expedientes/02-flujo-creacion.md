@@ -77,17 +77,16 @@ Al crear un expediente, el sistema genera automáticamente una carátula tipo do
 - **Motivo del expediente**: Texto libre ingresado por el usuario (Ej. Licitación Pública Gemelo Digital)
 - **Número de expediente**: Identificador automático con formato estándar (Ej. EX-2025-001000-TN-DGCO)
 
-#### Firma digital automática:
-- **Firmante**: Nombre, cargo y dependencia (Ej. Juana López, Jefa de Departamento, Dirección General de Compras)
-- **Validación**: Sello digital con fecha y hora (Ej. Validado por Municipalidad de Terranova – 03/05/2025 10:30:00)
+Firma digital automática:  
+Firmante: Nombre, Sello (cargo) y repartición(Ej. Juana López, Jefa de Departamento, Dirección General de Compras)  
+Validación: Sello digital con fecha y hora (Ej. Municipalidad de Terranova – 03/05/2025 10:30:00 GMT-3)  
 
-### Lógica de Asignación de Repartición Caratuladora
+Lógica de Asignación de Repartición Caratuladora  
+La capacidad de un usuario para crear la carátula de un expediente no es universal, y la repartición caratuladora numeradora puede no ser la misma que la del usuario creador. Depende directamente de la configuración del Backoffice:  
 
-La capacidad de un usuario para crear la carátula de un expediente no es universal, y la repartición caratuladora final puede no ser la misma que la del creador. Depende directamente de la configuración del Backoffice:
+- **Habilitación para Crear:** Un usuario solo podrá iniciar la creación de un expediente si su repartición está incluida en la configuración de Reparticiones Habilitadas para Caratular para el Tipo de Expediente seleccionado.  
+- **Asignación de Repartición Caratuladora:** Una vez que el expediente es creado, la Repartición Caratuladora se asigna automáticamente según la configuración del Backoffice para ese tipo de expediente, lo que puede diferir de la repartición del usuario creador.  
 
-1. **Habilitación para Crear**: Un usuario solo podrá iniciar la creación de un expediente si su repartición está incluida en la configuración de Reparticiones Habilitadas para Caratular para el Tipo de Expediente seleccionado.
-
-2. **Asignación de Repartición Caratuladora**: Una vez que el expediente es creado, la Repartición Caratuladora se asigna automáticamente según la configuración del Backoffice para ese tipo de expediente, lo que puede diferir de la repartición del usuario creador.
 
 #### Ejemplo Ilustrativo: Licitación Pública 
 
