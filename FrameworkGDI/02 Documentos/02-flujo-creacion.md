@@ -11,8 +11,6 @@ Un **Documento Oficial** es aquel que ha completado exitosamente el proceso de f
 
 **Solo los documentos en estado `signed` tienen plena validez legal.**
 
-![Documento Oficial Validez Legal](../images/documento-oficial-validez.png)
-
 ## 🏗️ Arquitectura del Flujo
 
 ### Estados Principales Implementados
@@ -34,8 +32,6 @@ CREATE TYPE document_status AS ENUM (
 📝 CREACIÓN → 👥 COLABORACIÓN → 📤 ENVÍO → ✍️ FIRMAS → 🔢 NUMERACIÓN → ✅ OFICIALIZACIÓN
 ```
 
-![Flujo General Documentos](../images/flujo-general-documentos.png)
-
 ---
 
 ## 📝 PASO 1: Creación e Inicialización
@@ -53,9 +49,12 @@ El usuario inicia la creación desde su panel de control mediante el botón **"C
 
 Al iniciar, el sistema presenta una ventana modal donde el usuario debe:
 
-![Modal Crear Documento](../images/modal-crear-documento.png)
+![Listado de tipos de documento](../assets/images/docs/listado_tipos_documento.png)
 
-#### A. Seleccionar Tipo de Documento
+#### A. Seleccionar Tipo de Documento y Referencia
+
+
+![Modal Crear Documento](../assets/images/docs/crear_documento_modal.png)
 
 **Campo**: Dropdown dinámico  
 **Fuente**: `document_types` WHERE `is_active = true`
@@ -105,7 +104,7 @@ INSERT INTO document_draft (
 
 ### 2.1 Pantalla Principal de Edición
 
-![Pantalla Edición Documento](../images/pantalla-edicion-documento.png)
+![Pantalla Edición Documento](../assets/images/docs/pantalla_edicion_documento.png)
 
 ### 2.2 Editor Colaborativo en Tiempo Real
 
@@ -132,8 +131,6 @@ INSERT INTO document_draft (
    - Resolución automática de conflictos
    - Respaldo en `content` (JSONB)
 
-![Editor Colaborativo](../images/editor-colaborativo-tiempo-real.png)
-
 ### 2.3 Asistente de IA (Terra)
 
 **Ubicación**: Panel lateral izquierdo  
@@ -143,11 +140,11 @@ INSERT INTO document_draft (
 - Análisis de consistencia del texto
 - Recomendaciones de mejora
 
-![Asistente IA Terra](../images/asistente-ia-terra.png)
+![Asistente IA Terra](../assets/images/docs/asistente_ia_terra.png.png)
 
 ### 2.4 Panel de Configuración (Lateral Derecho)
 
-![Panel Configuración Documento](../images/panel-configuracion-documento.png)
+![Panel Configuración Documento](../assets/images/docs/panel_lateral_configuracion.png)
 
 #### Configuraciones Incluidas:
 
@@ -186,6 +183,7 @@ INSERT INTO document_signers (
 ### 3.1 Generación de Previsualización
 
 **Trigger**: Usuario presiona botón "Previsualizar"
+![Botón Previsualizar](../assets/images/docs/boton_previsualizacion%20(2).png)
 
 **Proceso**:
 1. Validación de contenido obligatorio
@@ -193,7 +191,7 @@ INSERT INTO document_signers (
 3. Generación de PDF temporal con encabezado provisional
 4. Aplicación de marca de agua "PREVISUALIZACIÓN"
 
-![Previsualización Documento](../images/previsualizacion-documento.png)
+![Vista Previa PDF](../assets/images/docs/vista_previa_pdf.png)
 
 ### 3.2 Validaciones Pre-Envío
 
@@ -235,8 +233,6 @@ WHERE document_id = ?;
 - ✅ Firmantes reciben notificaciones
 - ✅ Documento aparece en paneles de firmantes
 
-![Inicio Circuito Firmas](../images/inicio-circuito-firmas.png)
-
 ---
 
 ## ✍️ PASO 4: Proceso de Firmas Secuencial
@@ -245,8 +241,6 @@ WHERE document_id = ?;
 
 **Sistema**: Signing Workflow Orchestrator  
 **Lógica**: Basada en `signing_order` en tabla `document_signers`
-
-![Orquestación Firmas](../images/orquestacion-firmas.png)
 
 ### 4.2 Estado Individual de Firmantes
 
@@ -293,8 +287,6 @@ SET status = 'rejected'
 WHERE document_id = ?;
 ```
 
-![Flujo Firmante](../images/flujo-firmante-individual.png)
-
 ### 4.4 Gestión de Rechazos
 
 **Trigger**: Firmante selecciona "Rechazar"
@@ -304,8 +296,6 @@ WHERE document_id = ?;
 2. Cambio de estado documento a `rejected`
 3. Notificación a creador y equipo
 4. Habilitación de proceso de corrección
-
-![Gestión Rechazos](../images/gestion-rechazos-proceso.png)
 
 ---
 
@@ -361,8 +351,6 @@ JOIN municipalities m ON d.municipality_id = m.id_municipality
 WHERE nr.numeration_requests_id = ?;
 ```
 
-![Proceso Numeración](../images/proceso-numeracion.png)
-
 ### 5.3 Transición Final: `sent_to_sign` → `signed`
 
 **Trigger**: Numerador completa su firma
@@ -404,8 +392,6 @@ WHERE document_id = ?;
 COMMIT;
 ```
 
-![Transición Final](../images/transicion-final-signed.png)
-
 ---
 
 ## ✅ PASO 6: Oficialización y Post-Firma
@@ -430,8 +416,6 @@ COMMIT;
 4. **🔗 Vinculación**: Automática a expediente (si configurado)
 5. **📊 Reportes**: Inclusión en estadísticas oficiales
 
-![Post Firma Funcionalidades](../images/post-firma-funcionalidades.png)
-
 ---
 
 ## 🔄 Flujos de Excepción
@@ -447,8 +431,6 @@ rejected → draft (edición) → sent_to_sign → signed
 2. Reactiva editor colaborativo
 3. Realiza correcciones necesarias
 4. Reenvía a circuito (nuevo ciclo)
-
-![Flujo Corrección](../images/flujo-correccion-rechazado.png)
 
 ### 2. Cancelación de Documento
 
@@ -471,8 +453,6 @@ UPDATE document_draft
 SET is_deleted = true 
 WHERE document_id = ? AND status = 'draft';
 ```
-
-![Flujos Excepción](../images/flujos-excepcion.png)
 
 ---
 
@@ -505,7 +485,7 @@ sequenceDiagram
     S->>DB: UPDATE status = 'signed'
 ```
 
-![Diagrama Secuencia Completo](../images/diagrama-secuencia-completo.png)
+---
 
 ## 🛡️ Validaciones y Controles
 
@@ -540,7 +520,5 @@ sequenceDiagram
 2. **🚫 Rechazos Frecuentes**: Mismos motivos repetidos
 3. **📊 Volumen Anómalo**: Picos inusuales de creación
 4. **⚠️ Errores Técnicos**: Fallos en numeración o PDF
-
-![Métricas Monitoreo](../images/metricas-monitoreo.png)
 
 ---

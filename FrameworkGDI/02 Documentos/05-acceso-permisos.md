@@ -1,226 +1,358 @@
-# Reglas de Acceso y Permisos
-
-## Introducción
+# 🔐 Reglas de Acceso y Permisos - Estado Real del Sistema
 
 El sistema de acceso y permisos de GDI está diseñado para garantizar la seguridad y privacidad de los documentos, mientras permite la colaboración necesaria entre usuarios y reparticiones. El control se basa en la pertenencia organizacional, el estado del documento y permisos específicos otorgados.
 
-## Reglas Generales de Visibilidad
+## 📊 Estado Actual de Implementación
 
-### Principio de Pertenencia
-- **Acceso por Repartición**: Los usuarios de una repartición ven únicamente los documentos de su repartición
-- **Privacidad por defecto**: Los documentos en desarrollo no son visibles fuera de la repartición de origen
-- **Búsqueda restringida**: Los documentos de otras reparticiones solo son accesibles mediante búsqueda por número oficial
+#### Estructura Organizacional
+```sql
+-- Tablas existentes verificadas
+municipalities (municipios)
+    ↓
+departments (reparticiones) 
+    ↓
+sectors (sectores)
+    ↓
+users (usuarios)
+```
 
-### Niveles de Acceso
-- **Acceso completo**: Crear, editar, compartir, eliminar
-- **Solo lectura**: Visualizar contenido sin modificar
-- **Sin acceso**: El documento no es visible para el usuario
+#### Sistema de Roles y Permisos
+```sql
+-- Tablas RBAC implementadas
+roles                    ✅ Tabla de roles del sistema
+permissions             ✅ Tabla de permisos disponibles  
+role_permissions        ✅ Relación roles-permisos
+user_roles              ✅ Asignación roles a usuarios
+```
 
-## Acceso por Estado del Documento
+#### Control de Acceso por Department
+```sql
+-- Tablas de control implementadas
+enabled_document_types_by_department    ✅ Tipos permitidos por department
+document_types_allowed_by_rank         ✅ Tipos permitidos por jerarquía
+user_sector_permissions               ✅ Permisos adicionales por sector
+```
 
-### Estado `draft` (En Edición)
+### 🚧 **PENDIENTE DE IMPLEMENTACIÓN:**
+- Funciones SQL de validación automática
+- Triggers de control de permisos
+- Sistema ACL en audit_data
+- Integración completa con flujo de documentos
 
-#### Acceso Completo
-- **Creador del documento**: Acceso total para edición y configuración
-- **Usuarios con permisos ACL**: Según nivel asignado (Editor, Comentador, Lector)
+---
 
-#### Acciones Permitidas
-- ✅ Editar contenido
-- ✅ Modificar configuración de firmantes
-- ✅ Compartir con otros usuarios
-- ✅ Previsualizar
-- ✅ Eliminar documento
+## 🏛️ Reglas Generales de Visibilidad
 
-#### Restricciones
-- ❌ Solo visible dentro de la repartición (excepto si está compartido)
-- ❌ No indexado en búsquedas globales
+### 7.1 Acceso por Pertenencia (IMPLEMENTADO)
 
-### Estado `awaiting_signatures` (Esperando Firmas)
+**Regla Base**: Usuarios de una reparticion ven únicamente los documentos de su reparticion (department)
 
-#### Acceso de Solo Lectura
-- **Firmantes asignados**: Pueden revisar el contenido completo
-- **Usuarios con permisos ACL**: Mantienen acceso según nivel configurado
-- **Creador**: Solo lectura, sin capacidad de edición
+**Implementación en BD:**
+```sql
+-- Estructura 
+users.sector_id → sectors.sector_id
+sectors.department_id → departments.department_id
 
-#### Acciones Permitidas
-- ✅ Ver contenido completo
-- ✅ Descargar PDF
-- ✅ Ver estado de firmas
-- ✅ Firmar (solo firmantes autorizados)
+-- Query base (DEBE IMPLEMENTARSE)
+SELECT dd.* 
+FROM document_draft dd
+JOIN users creator ON dd.created_by = creator.user_id
+JOIN sectors creator_sector ON creator.sector_id = creator_sector.sector_id
+JOIN departments creator_dept ON creator_sector.department_id = creator_dept.department_id
+WHERE creator_dept.department_id = (
+    SELECT user_dept.department_id 
+    FROM users current_user
+    JOIN sectors user_sector ON current_user.sector_id = user_sector.sector_id  
+    JOIN departments user_dept ON user_sector.department_id = user_dept.department_id
+    WHERE current_user.user_id = ? -- usuario actual
+);
+```
 
-#### Restricciones
-- ❌ **Inmutabilidad total**: No se puede editar contenido
-- ❌ No se pueden modificar firmantes
-- ❌ No se puede compartir con nuevos usuarios
+### 7.2 Búsqueda General (IMPLEMENTADO)
 
-### Estado `signed` (Firmado)
+**Regla**: Los documentos de otras reparticiones solo son accesibles mediante búsqueda por número oficial cuando están en estado `signed`.
 
-#### Acceso Público Restringido
-- **Dentro de la repartición**: Acceso de lectura para todos los usuarios
-- **Otras reparticiones**: Solo accesible por búsqueda de número oficial
-- **Usuarios con permisos ACL**: Mantienen acceso histórico
+**Implementación en BD:**
+```sql
+-- Tabla official_documents existe en Supabase
+SELECT od.official_number, dd.reference, od.signed_at
+FROM official_documents od
+JOIN document_draft dd ON od.document_id = dd.document_id
+WHERE od.official_number = ?
+  AND dd.status = 'signed'; -- Solo documentos oficiales
+```
 
-#### Acciones Permitidas
-- ✅ Ver contenido completo
-- ✅ Descargar PDF oficial
-- ✅ Imprimir
-- ✅ Vincular a expedientes
-- ✅ Usar en referencias
+### 7.3 Privacidad por Defecto (IMPLEMENTADO)
 
-#### Restricciones
-- ❌ **Documento inmutable**: No se puede modificar
-- ❌ No se pueden cambiar permisos
-- ❌ No se puede eliminar
+**Regla**: El sistema garantiza que los documentos en desarrollo no sean visibles fuera del department.
 
-## Sistema de Compartir (ACL)
+**Estados implementados en BD:**
+```sql
+-- document_status enum real en Supabase
+'draft'        -- En desarrollo, solo department
+'sent_to_sign' -- En firma, solo firmantes
+'signed'       -- Oficial, búsqueda pública
+'rejected'     -- En corrección, solo department
+'cancelled'    -- Cancelado, solo department  
+'archived'     -- Archivado, búsqueda limitada
+```
 
-### Funcionalidad de Compartir
+---
 
-La única excepción a la visibilidad restringida es cuando un documento ha sido explícitamente compartido con el usuario a través de la funcionalidad de Compartir. En este caso, el Access Control Manager (ACM) otorga permisos específicos a nivel de objeto (ACLs) que permiten al usuario acceder al documento compartido, independientemente de su repartición de origen.
+## 🤝 Funcionalidad de Compartir (PENDIENTE DE IMPLEMENTACIÓN)
 
-### Estados Aplicables
-- **Solo en estado `draft`**: La función compartir está disponible únicamente para documentos en edición
-- **Herencia de permisos**: Los permisos se mantienen cuando el documento cambia de estado
-- **Revocación**: Los permisos pueden ser revocados en cualquier momento
+### 7.4 Sistema ACL - Access Control Lists
 
-### Niveles de Permisos ACL
+**Regla de Negocio**: Documentos pueden compartirse explícitamente con usuarios específicos independientemente de su department de origen.
 
-#### Editor
-- **Acceso**: Completo al documento
-- **Acciones**:
-  - ✅ Ver contenido
-  - ✅ Editar contenido
-  - ✅ Modificar configuración
-  - ✅ Agregar comentarios
-  - ✅ Compartir con otros usuarios
+**Estado Actual**: 
+- ✅ Campo `audit_data` (JSONB) existe en `document_draft`
+- 🚧 Lógica ACL pendiente de implementación
 
-#### Comentador
-- **Acceso**: Lectura y comentarios
-- **Acciones**:
-  - ✅ Ver contenido
-  - ✅ Agregar comentarios
-  - ✅ Responder comentarios
-  - ❌ Editar contenido
-  - ❌ Modificar configuración
+**Implementación Requerida:**
+```sql
+-- Estructura propuesta para audit_data
+{
+  "shared_with": [
+    {
+      "user_id": "uuid",
+      "permission": "editor|comentador|lector",
+      "shared_by": "uuid", 
+      "shared_at": "timestamp",
+      "expires_at": "timestamp" // opcional
+    }
+  ],
+  "access_log": [
+    {
+      "user_id": "uuid",
+      "action": "view|edit|comment",
+      "timestamp": "timestamp",
+      "ip_address": "string"
+    }
+  ]
+}
 
-#### Lector
-- **Acceso**: Solo lectura
-- **Acciones**:
-  - ✅ Ver contenido
-  - ✅ Descargar PDF
-  - ❌ Editar contenido
-  - ❌ Agregar comentarios
-  - ❌ Compartir
+-- Query de validación ACL (DEBE IMPLEMENTARSE)
+SELECT dd.*
+FROM document_draft dd
+WHERE dd.document_id = ?
+  AND (
+    dd.created_by = ? -- Es el creador
+    OR
+    -- Pertenece a su department (ya implementado)
+    EXISTS (SELECT 1 FROM ... )
+    OR  
+    -- Tiene ACL específico (PENDIENTE)
+    JSON_EXTRACT(dd.audit_data, '$.shared_with[*].user_id') @> CAST(? AS JSON)
+  );
+```
 
-#### Sin Acceso
-- **Revocación**: El documento deja de ser visible para el usuario
-- **Efecto**: Como si nunca hubiera sido compartido
+**Características del Sistema de Compartir:**
 
-### Gestión de Permisos Compartidos
+#### Estados Aplicables
+- ✅ **Estado `draft`**: Compartir habilitado durante edición
+- ❌ **Estados posteriores**: No se puede compartir una vez enviado a firma
 
-#### Proceso de Compartir
-1. **Creador/Editor** selecciona "Compartir documento"
-2. **Busca usuario** por nombre o email
-3. **Asigna nivel de permiso** (Editor, Comentador, Lector)
-4. **Usuario notificado** por email
-5. **Acceso inmediato** al documento compartido
+#### Permisos Granulares (PENDIENTE)
+- **Editor**: Puede modificar contenido y configuración
+- **Comentador**: Puede agregar observaciones sin editar
+- **Lector**: Solo visualización  
+- **Sin acceso**: Revocar permisos específicos
 
-#### Modificación de Permisos
-- **Cambio de nivel**: Actualización inmediata de capacidades
-- **Revocación**: Pérdida inmediata de acceso
-- **Historial**: Auditoría completa de cambios de permisos
+#### Gestión Dinámica (PENDIENTE)
+- Permisos modificables en tiempo real
+- Revocación inmediata de accesos
+- Notificaciones automáticas
 
-### Auditoría de Compartir
+#### Auditoría Completa (PARCIAL)
+- ✅ Campo `audit_data` disponible
+- 🚧 Registro de compartir pendiente
+- 🚧 Logs de acceso pendientes
 
-#### Registro de Eventos
-- **Quién compartió**: Usuario que otorgó el permiso
-- **Con quién**: Usuario que recibió el acceso
-- **Cuándo**: Timestamp exacto de la acción
-- **Qué nivel**: Tipo de permiso otorgado
-- **Cambios**: Modificaciones posteriores de permisos
+---
 
-#### Consulta de Auditoría
-- **Panel de administrador**: Vista de todos los documentos compartidos
-- **Filtros disponibles**: Por usuario, fecha, tipo de permiso
-- **Exportación**: Reportes de auditoría en CSV/PDF
+## 🔒 Control de Acceso por Estado del Documento
 
-## Control de Acceso por Firmantes
+### 7.5 Matriz de Permisos por Estado
 
-### Validación de Autorización para Firmar
+| Estado | Creador | Department | Firmantes | ACL Users | Externos |
+|--------|---------|------------|-----------|-----------|----------|
+| **`draft`** | ✅ Editar | ✅ Ver | ❌ No acceso | 🚧 Según ACL | ❌ No acceso |
+| **`sent_to_sign`** | ✅ Ver | ✅ Ver | ✅ Firmar/Rechazar | 🚧 Solo lectura | ❌ No acceso |
+| **`signed`** | ✅ Ver | ✅ Ver | ✅ Ver | ✅ Ver | ✅ Buscar por número |
+| **`rejected`** | ✅ Editar | ✅ Ver | ✅ Ver motivos | 🚧 Según ACL | ❌ No acceso |
+| **`cancelled`** | ✅ Ver | ✅ Ver | ✅ Ver | ❌ No acceso | ❌ No acceso |
+| **`archived`** | ✅ Ver | ✅ Ver | ✅ Ver | ❌ No acceso | ✅ Búsqueda limitada |
 
-#### Verificaciones en Tiempo Real
-- **Titularidad activa**: Validación de que el usuario sigue siendo titular
-- **Permisos específicos**: Verificación según configuración del tipo de documento
-- **Estado del usuario**: Confirmación de que está activo en el sistema
+**Leyenda:**
+- ✅ Implementado en BD
+- 🚧 Estructura existe, lógica pendiente  
+- ❌ No implementado
 
-#### Cambios Durante el Proceso
-- **Pérdida de titularidad**: Bloqueo automático del proceso de firma
-- **Cambio de repartición**: Invalidación de permisos de firma
-- **Única resolución**: Cancelar proceso y reasignar firmantes
+---
 
-### Acceso de Firmantes
+## 👥 Sistema de Roles y Permisos (IMPLEMENTADO)
 
-#### Durante el Proceso
-- **Estado personal**: `firmar_ahora` cuando es su turno
-- **Acceso completo**: Revisión total del documento
-- **Capacidades**: Firmar o rechazar únicamente
+### 7.6 Estructura RBAC en Supabase
 
-#### Después de Firmar
-- **Acceso mantenido**: Continúa viendo el documento
-- **Solo lectura**: Sin capacidad de modificación
-- **Notificaciones**: Informado de cambios de estado
+**Tablas Verificadas:**
+```sql
+roles {
+    role_id: UUID
+    role_name: VARCHAR (unique)
+    description: TEXT
+    audit_data: JSONB
+}
 
-## Búsqueda y Descubrimiento
+permissions {
+    permission_id: UUID  
+    name: VARCHAR (unique)
+    description: TEXT
+    audit_data: JSONB
+}
 
-### Búsqueda por Número Oficial
+role_permissions {
+    role_id: UUID (FK)
+    permission_id: UUID (FK)
+    audit_data: JSONB
+}
 
-#### Acceso Global
-- **Documentos firmados**: Búsqueda por número oficial desde cualquier repartición
-- **Validación**: Solo documentos en estado `signed`
-- **Resultado**: Acceso de solo lectura al documento
+user_roles {
+    user_id: UUID (FK)
+    role_id: UUID (FK) 
+    audit_data: JSONB
+}
+```
 
-#### Casos de Uso
-- **Referencias legales**: Citar documentos oficiales
-- **Expedientes**: Vincular documentos existentes
-- **Auditoría**: Verificar documentos específicos
+**Consulta de Permisos Efectivos (DEBE IMPLEMENTARSE):**
+```sql
+-- Obtener permisos de un usuario
+SELECT DISTINCT p.name
+FROM users u
+JOIN user_roles ur ON u.user_id = ur.user_id
+JOIN role_permissions rp ON ur.role_id = rp.role_id  
+JOIN permissions p ON rp.permission_id = p.permission_id
+WHERE u.user_id = ?;
+```
 
-### Limitaciones de Búsqueda
-- **Documentos en borrador**: No aparecen en búsquedas globales
-- **Documentos en firma**: No son descubribles por otras reparticiones
-- **Permisos ACL**: No afectan la capacidad de búsqueda global
+---
 
-## Casos Especiales
+## 🏢 Control por Department y Jerarquía
 
-### Transferencia de Personal
-- **Cambio de repartición**: Pérdida de acceso a documentos de repartición anterior
-- **Documentos compartidos**: Se mantienen los permisos ACL otorgados
-- **Documentos creados**: Permanecen en la repartición original
+### 7.7 Permisos de Creación por Department (IMPLEMENTADO)
 
-### Documentos Huérfanos
-- **Usuario eliminado**: Los documentos permanecen en la repartición
-- **Repartición disuelta**: Transferencia controlada a repartición sucesora
-- **Acceso administrativo**: Super-admins pueden gestionar documentos huérfanos
+**Tabla**: `enabled_document_types_by_department`
+```sql
+{
+    id: INTEGER (PK)
+    document_type_id: UUID (FK)
+    department_id: UUID (FK)
+    audit_data: JSONB
+}
+```
 
-### Situaciones de Emergencia
-- **Acceso de emergencia**: Procedimientos para casos críticos
-- **Bypass temporal**: Solo con autorización de super-administrador
-- **Auditoría especial**: Registro detallado de accesos de emergencia
+**Validación de Creación (DEBE IMPLEMENTARSE):**
+```sql
+-- Verificar si usuario puede crear tipo de documento
+SELECT EXISTS (
+    SELECT 1 
+    FROM enabled_document_types_by_department edtd
+    JOIN departments d ON edtd.department_id = d.department_id
+    JOIN sectors s ON d.department_id = s.department_id
+    JOIN users u ON s.sector_id = u.sector_id
+    WHERE u.user_id = ?                    -- usuario actual
+      AND edtd.document_type_id = ?        -- tipo documento
+) as can_create;
+```
 
-## Mejores Prácticas
+### 7.8 Permisos de Firma por Jerarquía (IMPLEMENTADO)
 
-### Para Usuarios
-- **Principio de menor privilegio**: Compartir solo con quienes necesitan acceso
-- **Revisión periódica**: Verificar y revocar permisos innecesarios
-- **Documentación**: Dejar claro el propósito del acceso compartido
+**Tabla**: `document_types_allowed_by_rank`
+```sql
+{
+    id: INTEGER (PK)
+    document_type_id: UUID (FK)
+    rank_id: UUID (FK)
+    audit_data: JSONB
+}
+```
 
-### Para Administradores
-- **Monitoreo regular**: Revisión de patrones de acceso inusuales
-- **Políticas claras**: Definir reglas organizacionales para compartir
-- **Capacitación**: Educar a usuarios sobre seguridad de documentos
+**Validación de Firma (DEBE IMPLEMENTARSE):**
+```sql
+-- Verificar si usuario puede firmar tipo de documento
+SELECT EXISTS (
+    SELECT 1 
+    FROM document_types_allowed_by_rank dtar
+    JOIN departments d ON dtar.rank_id = d.rank_id
+    JOIN sectors s ON d.department_id = s.department_id
+    JOIN users u ON s.sector_id = u.sector_id
+    WHERE u.user_id = ?                    -- firmante
+      AND dtar.document_type_id = ?        -- tipo documento
+) as can_sign;
+```
 
-## Enlaces Relacionados
+---
 
-- [Estados y Transiciones](./03-estados-transiciones.md)
-- [Numeración y Nomenclatura](./04-numeracion-nomenclatura.md)
-- [Componentes Técnicos](./06-componentes-datos.md)
-- [Seguridad](./08-seguridad.md)
+## 🔧 Implementaciones Pendientes
+
+### 7.9 Funciones de Validación (DEBE IMPLEMENTARSE)
+
+```sql
+-- Función principal de validación de acceso
+CREATE OR REPLACE FUNCTION user_can_access_document(
+    p_user_id UUID,
+    p_document_id UUID,
+    p_action TEXT -- 'view', 'edit', 'sign'
+) RETURNS BOOLEAN AS $$
+BEGIN
+    -- Lógica de validación según reglas de negocio
+    -- PENDIENTE DE IMPLEMENTACIÓN
+END;
+$$ LANGUAGE plpgsql;
+```
+
+### 7.10 Triggers de Control (DEBE IMPLEMENTARSE)
+
+```sql
+-- Trigger de validación antes de acceso
+CREATE TRIGGER validate_document_access
+    BEFORE SELECT ON document_draft
+    FOR EACH ROW
+    EXECUTE FUNCTION check_access_permissions();
+
+-- PENDIENTE DE IMPLEMENTACIÓN
+```
+
+### 7.11 Sistema ACL Completo (DEBE IMPLEMENTARSE)
+
+- Interfaz de compartir documentos
+- Gestión de permisos granulares  
+- Notificaciones de acceso compartido
+- Logs de auditoría en tiempo real
+
+---
+
+## 📋 Checklist de Implementación
+
+### ✅ **COMPLETADO:**
+- [x] Estructura de departments, sectors, users
+- [x] Tablas RBAC (roles, permissions, user_roles)
+- [x] Control por department (enabled_document_types_by_department)
+- [x] Control por jerarquía (document_types_allowed_by_rank)
+- [x] Campo audit_data para ACLs
+
+### 🚧 **EN DESARROLLO:**
+- [ ] Funciones SQL de validación
+- [ ] Triggers automáticos de permisos
+- [ ] Sistema ACL en audit_data
+- [ ] Interfaz de compartir documentos
+
+### 📋 **PENDIENTE:**
+- [ ] Integración completa con flujo de documentos
+- [ ] Dashboard de permisos administrativo
+- [ ] Alertas de seguridad automatizadas
+- [ ] Reportes de auditoría de acceso
+
+---
+
+**📝 Nota**: Las implementaciones marcadas como "DEBE IMPLEMENTARSE" indican funcionalidades donde la estructura existe pero la lógica de negocio aún no está desarrollada.

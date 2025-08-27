@@ -1,270 +1,237 @@
-# Consideraciones de Seguridad
+# 🔒 Consideraciones de Seguridad - GDI Framework
 
 ## Introducción
 
-La seguridad en el módulo de Documentos de GDI es fundamental para garantizar la integridad, autenticidad y confidencialidad de la información oficial. El sistema implementa múltiples capas de seguridad que se adaptan al estado del documento y proporcionan protección integral durante todo el ciclo de vida.
+La seguridad en el módulo de Documentos de GDI se basa en el control estricto de estados, permisos organizacionales y trazabilidad. El sistema garantiza integridad y autenticidad a través de transiciones controladas y validaciones automáticas basadas en la estructura municipal implementada.
 
-## 12.1 Seguridad por Estado del Documento
+---
+
+## 📊 Seguridad por Estado del Documento
 
 ### Estado `draft` (En Edición)
 
-#### Control de Acceso
-- **Solo creador y usuarios con permisos ACL** pueden editar el documento
-- **Validación en tiempo real** de permisos antes de cada operación
-- **Bloqueo automático** si se revocan permisos durante la edición
+**Control de Acceso:**
+- ✅ Solo creador y usuarios de su department pueden acceder
+- ✅ Validación automática por pertenencia organizacional
+- 🚧 Sistema ACL en `audit_data` (estructura preparada, lógica pendiente)
+
+**Protecciones Implementadas:**
+- **Eliminación lógica**: `is_deleted = true` preserva integridad referencial
+- **Validación de contenido**: Campo `content` JSONB no puede estar vacío
+- **Validación de referencia**: Campo `reference` obligatorio (máx. 254 caracteres)
+
+### Estado `sent_to_sign` (En Circuito de Firmas)
+
+**Inmutabilidad Automática:**
+- ✅ Contenido bloqueado tras transición `draft` → `sent_to_sign`
+- ✅ Campo `sent_to_sign_at` registra momento exacto de bloqueo
+- ✅ Solo firmantes asignados pueden interactuar con el documento
 
-#### Versionado y Auditoría
-- **Registro de cambios**: Auditoría completa de modificaciones pre-firma
-- **Historial de versiones**: Backup automático de cada cambio significativo
-- **Metadatos de edición**: Captura de usuario, timestamp y tipo de modificación
-
-#### Protecciones Específicas
-- **Validación de contenido**: Verificación de HTML y estructura válida
-- **Límites de tamaño**: Prevención de documentos excesivamente grandes
-- **Filtrado de contenido**: Bloqueo de scripts maliciosos o contenido peligroso
-
-### Estado `awaiting_signatures` (Esperando Firmas)
+**Control de Firmantes:**
+- ✅ Lista cerrada en tabla `document_signers`
+- ✅ Validación secuencial por `signing_order`
+- ✅ Estados individuales: `pending` → `signed` o `rejected`
 
-#### Inmutabilidad del Contenido
-- **Bloqueo total contra modificaciones**: El contenido no puede ser alterado
-- **Hash de integridad**: Generación de huella digital para detectar cambios
-- **Validación continua**: Verificación periódica de que el contenido no ha sido modificado
-
-#### Verificación de Integridad
-- **Hash del documento**: Algoritmo SHA-256 para detectar alteraciones no autorizadas
-- **Verificación en cada acceso**: Comprobación automática de integridad
-- **Alertas de seguridad**: Notificación inmediata si se detectan cambios no autorizados
+### Estado `signed` (Documento Oficial)
 
-#### Control de Firmantes
-- **Lista cerrada**: No se pueden agregar o quitar firmantes
-- **Validación de autorización**: Verificación continua de permisos de firma
-- **Notificaciones seguras**: Comunicaciones cifradas a firmantes
+**Protección Permanente:**
+- ✅ Documento completamente inmutable
+- ✅ Entrada automática en tabla `official_documents`
+- ✅ Número oficial único con constraint `UNIQUE`
+- ✅ PDF firmado almacenado en `signed_pdf_url`
 
-### Estado `signed` (Firmado)
-
-#### Protección Permanente
-- **Documento completamente inmutable**: Ninguna modificación es posible
-- **Sellado criptográfico**: Protección permanente con firmas digitales
-- **Backup automático**: Respaldo inmediato del documento finalizado
+---
 
-#### Validación Continua
-- **Verificación periódica**: Checks automáticos de integridad de firmas digitales
-- **Validación de certificados**: Verificación de vigencia de certificados utilizados
-- **Alertas de caducidad**: Notificaciones antes del vencimiento de certificados
+## 🏛️ Seguridad Organizacional
 
-## 12.2 Autenticación y Autorización de Firmas
-
-### Autenticación Reforzada
-
-#### Verificación de Identidad
-- **Autenticación multi-factor**: Verificación robusta del firmante al momento de firmar
-- **Validación de sesión**: Confirmación de que la sesión sigue activa y válida
-- **Verificación de IP**: Control de direcciones IP autorizadas para firma
+### Control por Department
 
-#### Certificados Digitales
-- **Validación de certificados**: Verificación de autenticidad y vigencia
-- **Cadena de confianza**: Verificación completa de la cadena de certificación
-- **Lista de revocación**: Consulta automática de certificados revocados
-
-### Autorización Granular
-
-#### Validación de Permisos
-- **Permisos específicos por tipo**: Validación según configuración BackOffice
-- **Verificación en tiempo real**: Confirmación de autorización al momento de firma
-- **Control de titularidad**: Verificación de que el firmante sigue siendo titular
+**Reglas Implementadas:**
+```sql
+-- Acceso basado en estructura organizacional
+users.sector_id → sectors.department_id → departments
+```
 
-#### Jerarquía de Autorización
-- **Roles definidos**: Validación según roles organizacionales
-- **Delegación controlada**: Gestión segura de delegaciones temporales
-- **Auditoría de autorización**: Registro completo de decisiones de autorización
-
-### Firma Certificada
+**Validaciones Automáticas:**
+- ✅ `enabled_document_types_by_department`: Controla qué tipos puede usar cada repartición
+- ✅ `document_types_allowed_by_rank`: Controla qué jerarquías pueden firmar
+- ✅ Solo usuarios autorizados pueden ser numeradores
 
-#### Cumplimiento con Estándares
-- **Estándares de firma digital**: Cumplimiento con normativas para validez jurídica
-- **Algoritmos seguros**: Uso de algoritmos criptográficos robustos
-- **Timestamping**: Sellado de tiempo para garantizar el momento de firma
+### Sistema RBAC
 
-#### No Repudio
-- **Imposibilidad de negar autoría**: La firma una vez completada es irrefutable
-- **Evidencia criptográfica**: Pruebas matemáticas de la autoría
-- **Registro inmutable**: Documentación que no puede ser alterada
-
-## 12.3 Numeración y Unicidad Oficial
+**Roles Implementados:**
+- Tablas: `roles`, `permissions`, `role_permissions`, `user_roles`
+- Validación por tipo de documento y repartición
+- Control granular de operaciones (crear, editar, firmar, numerar)
 
-### Servicio OFICIAL NUMBER
-
-#### Generación Atómica
-- **Números únicos**: Generación con bloqueos de concurrencia para prevenir duplicados
-- **Operaciones atómicas**: Transacciones que garantizan consistencia
-- **Rollback automático**: Reversión en caso de fallas durante la asignación
+---
 
-#### Gestión por NUMERADOR_OFICIAL
-- **Servicio centralizado**: Un solo punto de control para toda la numeración
-- **Alta disponibilidad**: Redundancia para garantizar continuidad del servicio
-- **Monitoreo continuo**: Supervisión 24/7 del estado del servicio
+## 🔢 Seguridad en Numeración Oficial
 
-### Secuencialidad Garantizada
-
-#### Prevención de Duplicados
-- **Funciones de BD**: Constraints y triggers para prevenir números repetidos
-- **Validación múltiple**: Verificaciones en diferentes capas del sistema
-- **Detección temprana**: Identificación inmediata de inconsistencias
+### Prevención de Duplicados
 
-#### Control de Secuencia
-- **Sin saltos**: Detección y prevención de brechas en la numeración
-- **Orden cronológico**: Garantía de que los números siguen el orden temporal
-- **Recuperación**: Procedimientos para corregir inconsistencias detectadas
+**Constraints de Base de Datos:**
+```sql
+-- Implementados en Supabase
+CONSTRAINT unique_official_number UNIQUE (official_number)
+CONSTRAINT unique_reserved_number UNIQUE (reserved_number)
+```
 
-### Integridad del Formato
+**Proceso Atómico:**
+- ✅ Reserva secuencial en tabla `numeration_requests`
+- ✅ Validación de formato: `<TIPO>-<AAAA>-<NNNNNN>-<SIGLA_ECO>-<SIGLA_DEPT>`
+- ✅ Confirmación solo tras firma exitosa del numerador
 
-#### Validación del Patrón
-- **Formato estándar**: `<TIPO>-<AAAA>-<NNNNNN>-<SIGLA_ECO>-<SIGLA_REPARTICIÓN>`
-- **Verificación sintáctica**: Validación de estructura y caracteres permitidos
-- **Consistencia semántica**: Verificación de que los componentes son válidos
+### Control de Concurrencia
 
-#### No Existen Documentos Huérfanos
-- **Numeración solo al completar**: Asignación únicamente tras proceso exitoso
-- **Validación previa**: Verificación completa antes de asignar número
-- **Cleanup automático**: Limpieza de procesos incompletos
+**Problemas Identificados:**
+- 🚧 Sistema actual vulnerable a condiciones de carrera
+- 🚧 Múltiples usuarios numerando simultáneamente el mismo tipo
 
-## 12.4 Auditoría y Trazabilidad
+**Mitigaciones Implementadas:**
+- ✅ Constraint de unicidad en base de datos
+- ✅ Estados de validación: `pending`, `valid`, `invalid`
 
-### Log Inmutable
+---
 
-#### Registro de Acciones Críticas
-- **Creación**: Registro completo del momento y usuario de creación
-- **Edición**: Log detallado de cada modificación realizada
-- **Firmas**: Documentación exhaustiva del proceso de firma
-- **Numeración**: Registro del momento y condiciones de asignación oficial
+## 📋 Auditoría y Trazabilidad
 
-#### Integridad del Log
-- **Logs inmutables**: Los registros no pueden ser modificados una vez creados
-- **Hash encadenado**: Verificación de integridad de la secuencia de logs
-- **Backup distribuido**: Respaldo en múltiples ubicaciones seguras
+### Campo `audit_data` (JSONB)
 
-### Metadatos de Firma
+**Información Registrada:**
+```json
+{
+  "created_by": "user_id",
+  "created_at": "timestamp",
+  "modified_by": "user_id",
+  "last_modified_at": "timestamp",
+  "state_transitions": [
+    {
+      "from": "draft",
+      "to": "sent_to_sign", 
+      "timestamp": "...",
+      "user": "..."
+    }
+  ]
+}
+```
 
-#### Información Capturada
-- **Timestamp**: Momento exacto de la firma con precisión de milisegundos
-- **IP Address**: Dirección IP desde donde se realizó la firma
-- **Dispositivo**: Información del dispositivo utilizado para firmar
-- **Certificados**: Detalles completos de los certificados digitales utilizados
+### Trazabilidad por Tabla
 
-#### Geolocalización
-- **Ubicación**: Registro de ubicación geográfica (si está disponible)
-- **Red**: Información sobre la red utilizada
-- **Sesión**: Detalles de la sesión activa durante la firma
+**`document_draft`**: Historial completo del documento
+**`document_signers`**: Estado individual de cada firmante  
+**`document_rejections`**: Motivos y usuarios que rechazaron
+**`official_documents`**: Documento final con validez legal
 
-### Historial Completo
+---
 
-#### Trazabilidad Integral
-- **Desde creación**: Registro desde el primer momento del documento
-- **Hasta archivo**: Seguimiento durante todo el ciclo de vida
-- **Cambios de estado**: Documentación de cada transición
-- **Intervenciones**: Registro de todas las acciones de usuarios
+## 🔐 Control de Permisos en Tiempo Real
 
-#### Acceso Controlado
-- **Solo administradores y auditores**: Acceso restringido a logs detallados
-- **Permisos granulares**: Diferentes niveles de acceso según rol
-- **Auditoría de acceso**: Registro de quién consulta los logs y cuándo
+### Validaciones Durante el Proceso
 
-## 12.5 Protección de Datos
+**Al Momento de Firma:**
+- ✅ Verificación de que el usuario sigue activo
+- ✅ Validación de pertenencia a repartición autorizada
+- ✅ Confirmación de que es su turno en `signing_order`
 
-### Cifrado en Reposo
+**Gestión de Cambios Organizacionales:**
+- ❌ Sistema actual no maneja cambios durante proceso activo
+- ❌ No hay delegación temporal de firmas
+- ❌ Procesos se detienen si firmante no está disponible
 
-#### Contenido Protegido
-- **Cifrado de base de datos**: Contenido y metadatos cifrados en almacenamiento
-- **Algoritmos robustos**: AES-256 para cifrado de datos sensibles
-- **Gestión de claves**: Manejo seguro de claves de cifrado
+---
 
-#### Metadatos Seguros
-- **Información de usuario**: Datos personales protegidos con cifrado
-- **Configuración**: Parámetros del sistema cifrados
-- **Logs**: Registros de auditoría protegidos contra alteración
+## 🛡️ Medidas de Protección Implementadas
 
-### Cifrado en Tránsito
+### Integridad de Datos
 
-#### Comunicaciones Protegidas
-- **TLS/SSL**: Todas las comunicaciones protegidas con protocolos seguros
-- **Certificados válidos**: Verificación de autenticidad de certificados
-- **Perfect Forward Secrecy**: Protección adicional en comunicaciones
+**Estados Válidos:**
+```sql
+CREATE TYPE document_status AS ENUM (
+    'draft', 'sent_to_sign', 'signed', 
+    'rejected', 'cancelled', 'archived'
+);
+```
 
-#### APIs Seguras
-- **Autenticación**: Tokens seguros para acceso a APIs
-- **Autorización**: Verificación de permisos en cada llamada
-- **Rate limiting**: Protección contra ataques de fuerza bruta
+**Transiciones Controladas:**
+- ✅ Solo transiciones válidas permitidas por lógica de negocio
+- ✅ Timestamps automáticos en cada cambio de estado
+- ✅ Preservación de historial completo
 
-### Backup Seguro
+### Validaciones de Negocio
 
-#### Respaldos Cifrados
-- **Cifrado completo**: Todos los respaldos completamente cifrados
-- **Retención controlada**: Políticas institucionales de retención de datos
-- **Ubicaciones múltiples**: Respaldos distribuidos geográficamente
+**Campos Obligatorios:**
+- `reference` no puede estar vacío
+- `content` debe tener información válida
+- Al menos un firmante y un numerador requeridos
 
-#### Recuperación Controlada
-- **Procedimientos seguros**: Procesos validados para restauración
-- **Verificación de integridad**: Comprobación de respaldos antes de restaurar
-- **Auditoría de recuperación**: Registro completo de operaciones de restauración
+**Reglas de Consistencia:**
+- Solo un numerador por documento (`is_numerator = true`)
+- Orden de firma secuencial válido
+- Numeración solo tras proceso completo
 
-## 12.6 Verificación de Autorización en Tiempo Real
+---
 
-### Validación Continua
+## 📞 Gestión de Incidentes
 
-#### Al Momento de Firma
-- **Validación de titularidad**: Verificación de que el firmante sigue siendo titular
-- **Estado activo**: Confirmación de que el usuario está activo en el sistema
-- **Permisos vigentes**: Verificación de que mantiene los permisos necesarios
+### Problemas Comunes y Resoluciones
 
-#### Durante el Proceso
-- **Monitoreo continuo**: Supervisión de cambios en permisos durante el circuito
-- **Alertas automáticas**: Notificación inmediata de cambios de autorización
-- **Validación periódica**: Verificaciones regulares de estado de firmantes
+**Documento Rechazado:**
+- ✅ Automático: Estado cambia a `rejected`
+- ✅ Registro en tabla `document_rejections`
+- ✅ Posibilidad de corrección y reenvío
 
-### Gestión de Cambios
+**Proceso Estancado:**
+- ❌ Detección manual requerida
+- ❌ Resolución por cancelación y reasignación
+- ❌ Sin alertas automáticas implementadas
 
-#### Bloqueo Automático
-- **Cambio de permisos**: Suspensión automática si se modifican autorizaciones
-- **Cambio de estado**: Bloqueo si el usuario es desactivado
-- **Cambio organizacional**: Suspensión ante modificaciones estructurales
+**Error en Numeración:**
+- ✅ Constraint de BD previene duplicados
+- ✅ Estados de validación para control
+- 🚧 Procedimientos de corrección manuales
 
-#### Resolución de Conflictos
-- **Única opción válida**: Cancelar proceso y reasignar firmantes
-- **Notificación inmediata**: Alerta a todos los participantes del proceso
-- **Documentación completa**: Registro detallado del conflicto y resolución
+---
 
-### Auditoría de Autorización
+## 🔗 Integración con Normativa Argentina
 
-#### Registro Detallado
-- **Decisiones de autorización**: Log de todas las validaciones realizadas
-- **Cambios de estado**: Documentación de modificaciones de permisos
-- **Intervenciones manuales**: Registro de acciones administrativas
+### Cumplimiento Legal
 
-#### Análisis de Patrones
-- **Detección de anomalías**: Identificación de patrones inusuales de acceso
-- **Alertas de seguridad**: Notificación de comportamientos sospechosos
-- **Reportes regulares**: Informes periódicos de actividad de autorización
+**Ley 25.506 - Firma Digital:**
+- ✅ Estructura preparada para firma digital
+- ✅ Campo `required_signature` en tipos de documento
+- 🚧 Integración con certificados digitales pendiente
 
-## Mejores Prácticas de Seguridad
+**Ley 27.275 - Acceso a la Información Pública:**
+- ✅ Documentos en estado `signed` son públicamente consultables
+- ✅ Control de acceso diferencial por estado
+- ✅ Trazabilidad completa para auditorías
 
-### Para Usuarios
-- **Contraseñas seguras**: Uso de credenciales robustas y únicas
-- **Sesiones seguras**: Cierre de sesión al terminar el trabajo
-- **Reportar incidentes**: Notificación inmediata de actividades sospechosas
+---
 
-### Para Administradores
-- **Monitoreo regular**: Supervisión continua de logs y alertas
-- **Actualizaciones**: Mantenimiento de sistemas y certificados actualizados
-- **Capacitación**: Formación regular del personal en seguridad
+## 📋 Checklist de Estado Actual
 
-### Para el Sistema
-- **Actualizaciones automáticas**: Patches de seguridad aplicados regularmente
-- **Monitoreo 24/7**: Supervisión continua de la seguridad del sistema
-- **Respuesta a incidentes**: Procedimientos establecidos para emergencias
+### ✅ **Implementado y Funcional:**
+- [x] Control de estados con transiciones válidas
+- [x] Sistema RBAC básico con roles organizacionales  
+- [x] Control de acceso por repartición/department
+- [x] Numeración secuencial with constraints de unicidad
+- [x] Auditoría básica en campo `audit_data`
+- [x] Validación de tipos de documento por repartición
+- [x] Eliminación lógica que preserva integridad
 
-## Enlaces Relacionados
+### 🚧 **Estructura Preparada, Lógica Pendiente:**
+- [ ] Sistema ACL completo en `audit_data` 
+- [ ] Editor colaborativo en tiempo real (`pad_id`)
+- [ ] Integración con certificados digitales oficiales
+- [ ] Funciones SQL de validación automática
 
-- [Acceso y Permisos](./05-acceso-permisos.md)
-- [Estados y Transiciones](./03-estados-transiciones.md)
-- [Validaciones y Excepciones](./07-validaciones-excepciones.md)
-- [Numeración y Nomenclatura](./04-numeracion-nomenclatura.md)
+### ❌ **No Implementado:**
+- [ ] Delegación temporal de firmas
+- [ ] Escalación automática por inactividad  
+- [ ] Alertas por procesos estancados
+- [ ] Control de concurrencia robusto en numeración
+
+---
+
+*Este documento refleja el estado real del sistema GDI según la documentación técnica vigente. Las mejoras de seguridad adicionales requieren desarrollo específico según las necesidades operativas identificadas.*
