@@ -1,0 +1,240 @@
+# 🏗️ Estructura Organizacional
+
+## 3.1 Composición de un Organismo Municipal
+
+GDI organiza la estructura jerárquica en **4 niveles principales** (según BD real):
+
+```
+MUNICIPALITY (Municipio)
+├── DEPARTMENTS (Reparticiones/Secretarías)
+│   ├── SECTORS (Sectores/Áreas)
+│   │   └── USERS (Empleados/Funcionarios)
+│   └── RANKS (Niveles Jerárquicos)
+```
+
+## 3.2 Niveles Jerárquicos
+
+### 🏛️ NIVEL 0: MUNICIPALITY (municipalities)
+
+- **Nivel máximo** del sistema - soporta múltiples municipios
+- **Campos reales en BD**:
+  - `id_municipality` (UUID)
+  - `name` (nombre del municipio)
+  - `acronym` (2-5 caracteres)
+  - `country` (ENUM: AR, BR, UY, CL)
+  - `schema_name` (esquema único de BD)
+  - `tax_identifier` (CUIT/identificador fiscal)
+- **Configuración asociada**: `municipalities_settings` con logo, colores, etc.
+- **Ejemplo**: Municipio de Terranova con acrónimo "TN", CUIT 30-12345678-9
+
+### 🏢 NIVEL 1: DEPARTMENT (departments)
+
+- Representa las grandes áreas funcionales del municipio
+- **Campos reales en BD**:
+  - `department_id` (UUID)
+  - `name` (ej: "Secretaría de Gobierno")
+  - `acronym` (puede ser NULL para department raíz)
+  - `head_user_id` (UUID del titular - puede ser NULL)
+  - `rank_id` (nivel jerárquico asignado)
+  - `parent_jurisdiction_id` (para crear sub-departments)
+  - `municipality_id` (relación con municipality)
+  - `is_active` (boolean)
+  - `start_date`, `end_date` (vigencia temporal)
+- **Ejemplo**: Secretaría de Hacienda (SECHAC) con Juan Pérez como titular, rank nivel 8
+
+### 📁 NIVEL 2: SECTOR (sectors)
+
+- Subdivisiones funcionales dentro de cada department
+- **Campos reales en BD**:
+  - `sector_id` (UUID)
+  - `department_id` (UUID - relación con department)
+  - `acronym` (2-10 caracteres mayúsculas)
+  - `is_active` (boolean)
+  - `start_date`, `end_date` (vigencia temporal)
+- **Nota**: NO existe campo "name" en sectors (solo acronym)
+- **Ejemplo**: Sector "MESA" (Mesa de Entrada) dentro de Secretaría de Gobierno
+
+### 👤 NIVEL 3: USUARIO (users)
+
+- Empleados y funcionarios municipales
+- **Campos reales en BD**:
+  - `user_id` (UUID)
+  - `auth_id` (string - integración con Supabase Auth)
+  - `full_name` (nombre completo)
+  - `email` (único en el sistema)
+  - `cuit` (único, puede ser NULL)
+  - `sector_id` (UUID - UN solo sector por usuario)
+  - `profile_picture_id` (referencia a media_files)
+  - `is_active` (boolean)
+  - `last_access` (timestamp)
+  - `created_at` (timestamp)
+- **Ejemplo**: María González, CUIT 27-12345678-9, asignada al sector MESA
+
+### 🎖️ COMPONENTE: RANKS (ranks)
+
+- Define niveles de autoridad y jerarquía
+- **Campos reales en BD**:
+  - `rank_id` (UUID)
+  - `rank_name` (único)
+  - `head_signature` (texto de firma)
+- **Integración**: Se asigna a departments mediante `rank_id`
+- **Ejemplo**: Rank "Secretario" (nivel 8), "Director" (nivel 6), "Coordinador" (nivel 4)
+
+## 3.3 Entidades del Organigrama (REAL)
+
+### 3.3.1 Entidad Usuario (users)
+
+```
+USUARIO (Tabla: users)
+├── Identificación
+│   ├── user_id: UUID (PK)
+│   ├── auth_id: String (único, integración Auth)
+│   └── cuit: String (único, opcional)
+├── Datos Personales
+│   ├── full_name: String (requerido)
+│   ├── email: String (único, requerido)
+│   └── profile_picture_id: UUID (opcional)
+├── Ubicación Organizacional
+│   ├── sector_id: UUID (Sector OFICIAL - donde pertenece)
+│   └── [user_sector_permissions]: Sectores donde COLABORA
+├── Estado
+│   ├── is_active: Boolean (default: true)
+│   ├── last_access: Timestamp
+│   └── created_at: Timestamp
+└── Metadatos
+    ├── identity_check: JSONB (validaciones)
+    └── audit_data: JSONB (auditoría)
+```
+
+**Ejemplo**: Usuario Juan Pérez con sector_id apuntando a "SISTEMAS", pero con permisos adicionales en "MESA" y "LEGAL" mediante user_sector_permissions.
+
+### 3.3.2 Entidad Department (departments)
+
+```
+DEPARTMENT (Tabla: departments)
+├── Identificación
+│   ├── department_id: UUID (PK)
+│   ├── name: String (requerido)
+│   └── acronym: String (opcional)
+├── Jerarquía
+│   ├── parent_jurisdiction_id: UUID (auto-referencia)
+│   ├── rank_id: UUID (nivel jerárquico)
+│   └── municipality_id: UUID (municipio)
+├── Responsable
+│   └── head_user_id: UUID (titular - puede ser NULL)
+├── Vigencia
+│   ├── is_active: Boolean (default: true)
+│   ├── start_date: Timestamp
+│   └── end_date: Timestamp (opcional)
+└── Metadatos
+    └── audit_data: JSONB
+```
+
+**Ejemplo**: Department "Secretaría de Modernización" con parent_jurisdiction_id NULL (es raíz), head_user_id apuntando a Ana López.
+
+### 3.3.3 Entidad Sector (sectors)
+
+```
+SECTOR (Tabla: sectors)
+├── Identificación
+│   ├── sector_id: UUID (PK)
+│   └── acronym: String (2-10 chars, mayúsculas)
+├── Jerarquía
+│   └── department_id: UUID (FK a departments)
+├── Vigencia
+│   ├── is_active: Boolean (default: true)
+│   ├── start_date: Timestamp
+│   └── end_date: Timestamp (opcional)
+└── Metadatos
+    └── audit_data: JSONB
+```
+
+**Ejemplo**: Sector "CONT" (Contabilidad) con department_id apuntando a Secretaría de Hacienda.
+
+## 3.4 Reglas de Negocio (Basadas en BD Real)
+
+### 📋 [RN001: ESTRUCTURA_JERÁRQUICA]
+**Implementación Real en BD:**
+- ✅ Todo usuario tiene UN sector OFICIAL (`sector_id` en users)
+- ✅ Un usuario puede COLABORAR en múltiples sectores (`user_sector_permissions`)
+- ✅ Todo sector pertenece a UN department (`department_id` en sectors)
+- ✅ Un department puede tener múltiples sectors
+- ✅ Un sector puede tener múltiples usuarios (oficiales y colaboradores)
+
+**Distinción importante:**
+- **Sector Oficial**: Donde el usuario está asignado formalmente (`users.sector_id`)
+  - *Ejemplo*: María está oficialmente en "Mesa de Entrada"
+- **Sectores Colaborador**: Donde tiene permisos adicionales (`user_sector_permissions`)
+  - *Ejemplo*: María también colabora en "Sistemas" para soporte técnico
+
+### 👑 [RN002: TITULARIDAD]
+**Implementación Real en BD:**
+- ✅ Cada department puede tener UN titular (`head_user_id`)
+- ✅ Un usuario puede ser titular de múltiples departments
+- ⚠️ El control de "solo titulares gestionan" debe implementarse en lógica de aplicación
+
+**Ejemplo**: Carlos Rodríguez es titular de "Dirección de Compras" y también de "Dirección de Contrataciones" (dos head_user_id apuntan al mismo user_id).
+
+### 🔑 [RN003: UNICIDAD]
+**Constraints Reales en BD:**
+- ✅ `users.cuit` - UNIQUE constraint
+- ✅ `users.email` - UNIQUE constraint  
+- ✅ `users.auth_id` - UNIQUE constraint
+- ✅ `municipalities.acronym` - UNIQUE constraint
+- ✅ `departments.acronym` - Sin constraint único (puede repetirse)
+- ✅ `sectors.acronym` - CHECK constraint (formato) pero no único global
+
+**Ejemplo**: No pueden existir dos usuarios con email "juan@municipio.gov", pero sí pueden existir dos departments con acronym "DIR" en diferentes municipios.
+
+### 🔐 [RN004: PERMISOS_GESTIÓN]
+**Implementación mediante RBAC:**
+```sql
+-- Sistema de permisos real
+roles (role_id, role_name, description)
+permissions (permission_id, name, description)
+role_permissions (role_id, permission_id)
+user_roles (user_id, role_id)
+user_sector_permissions (user_id, sector_id)
+```
+
+**Ejemplo**: Usuario con rol "Administrador de Repartición" tiene permisos "crear_usuario", "modificar_sector", "ver_reportes".
+
+## 3.5 Relaciones y Cardinalidades Reales
+
+| Relación | Cardinalidad | Implementación | Ejemplo |
+|----------|--------------|----------------|---------|
+| Municipality → Departments | 1:N | `departments.municipality_id` | 1 municipio tiene 15 departments |
+| Department → Sectors | 1:N | `sectors.department_id` | Secretaría de Gobierno tiene 5 sectors |
+| Sector → Users (oficial) | 1:N | `users.sector_id` | Sector MESA tiene 10 usuarios asignados |
+| Sector → Users (colaborador) | N:N | `user_sector_permissions` | Juan colabora en MESA, SISTEMAS y LEGAL |
+| Department → Head User | N:1 | `departments.head_user_id` | Ana es titular de 2 departments |
+| Department → Rank | N:1 | `departments.rank_id` | 5 departments tienen rank "Dirección" |
+| User → Roles | N:N | Tabla `user_roles` | María tiene roles "Agente" y "Auditor" |
+| Role → Permissions | N:N | Tabla `role_permissions` | Rol "Admin" tiene 20 permisos |
+
+### 🔄 Modelo de Pertenencia Dual:
+
+1. **Pertenencia Oficial** (`users.sector_id`):
+   - Cada usuario tiene UN sector oficial
+   - Define su ubicación formal en la estructura
+   - Determina su department principal
+   - *Ejemplo*: Pedro pertenece oficialmente a "Recursos Humanos"
+
+2. **Colaboración** (`user_sector_permissions`):
+   - Usuario puede tener permisos en múltiples sectores
+   - Permite trabajo transversal entre áreas
+   - Habilita colaboración sin cambiar pertenencia oficial
+   - *Ejemplo*: Pedro colabora también en "Capacitación" y "Bienestar Laboral"
+
+## 3.6 Campos de Control Temporal
+
+Todas las entidades organizacionales tienen control de vigencia:
+
+- **`is_active`**: Estado actual (activo/inactivo)
+- **`start_date`**: Fecha de inicio de vigencia
+- **`end_date`**: Fecha de fin (NULL = vigente)
+- **`audit_data`**: JSONB para auditoría de cambios
+
+**Ejemplo**: Sector "TEMP2024" creado para proyecto especial con start_date='2024-01-01' y end_date='2024-12-31'.
+
+---
