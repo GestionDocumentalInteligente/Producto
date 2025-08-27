@@ -11,20 +11,20 @@ La nomenclatura de los IDs de expedientes sigue un formato estandarizado para as
 ### Estructura Detallada
 
 ```
-EX - 2025 - 000123 - TN - DGCO
+EE - 2025 - 000123 - TN - DGCO
 |    |      |        |    |
 |    |      |        |    └→ Repartición caratuladora (ej.Dirección General de Compras)
 |    |      |        └→ Sigla del municipio o jurisdicción (ej Terranova)
 |    |      └→ Número correlativo del expediente (por año)
 |    └→ Año
-└→ Identificador del tipo (EX = Expediente)
+└→ Identificador del tipo (EE = Expediente)
 ```
 
 ### Componentes del Formato
 
 | **Componente** | **Descripción** | **Ejemplo** |
 |----------------|-----------------|-------------|
-| **EX** | Identificador del tipo (EX = Expediente) | EX |
+| **EE** | Identificador del tipo (EE = Expediente) | EE |
 | **2025** | Año | 2025 |
 | **000123** | Número correlativo del expediente (por año) | 000123 |
 | **TN** | Sigla del municipio o jurisdicción | TN (Terranova) |

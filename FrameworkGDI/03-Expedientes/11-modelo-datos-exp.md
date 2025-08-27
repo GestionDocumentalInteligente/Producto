@@ -29,7 +29,7 @@ El flujo de creación de expedientes involucra múltiples entidades que trabajan
 CREATE TABLE expedients (
     -- Identificación única
     expedient_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    expedient_number VARCHAR UNIQUE NOT NULL, -- EX-AAAA-NNNNNN-SIGLA_ECO-SIGLA_DEPT
+    expedient_number VARCHAR UNIQUE NOT NULL, -- EE-AAAA-NNNNNN-SIGLA_ECO-SIGLA_DEPT
     
     -- Configuración del expediente
     expedient_type_id UUID NOT NULL,

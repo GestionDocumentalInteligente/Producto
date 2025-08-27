@@ -119,7 +119,7 @@ specific_admin_department_id = NULL
 **Ejemplo:**
 ```
 Usuario: María García (SECGOB) crea expediente OBRA
-Resultado: EX-2025-000456-TN-SECGOB
+Resultado: EE-2025-000456-TN-SECGOB
 ```
 
 #### 2. **Repartición Específica** (Fija)
@@ -137,7 +137,7 @@ specific_admin_department_id = 'uuid-direccion-compras'
 ```
 Usuario: Juan Pérez (MESA) crea expediente LICPUB
 Configuración: admin = "Dirección de Compras" 
-Resultado: EX-2025-000789-TN-DGCO (siempre DGCO)
+Resultado: EE-2025-000789-TN-DGCO (siempre DGCO)
 ```
 
 ---
@@ -197,7 +197,7 @@ WHERE m.id_municipality = ? AND d.department_id = ?;
 
 Cuando se crea un expediente, **automáticamente** se genera:
 
-1. **Expediente**: `EX-2025-000123-TN-DGCO`
+1. **Expediente**: `EE-2025-000123-TN-DGCO`
 2. **Carátula**: `CAEX-2025-005000-TN-DGCO`
 
 ### Diferencias Clave
@@ -205,7 +205,7 @@ Cuando se crea un expediente, **automáticamente** se genera:
 | **Aspecto** | **Expediente** | **Carátula** |
 |-------------|---------------|--------------|
 | **Propósito** | Contenedor del trámite | Documento PDF oficial |
-| **Numeración** | Secuencia EX | Secuencia CAEX independiente |
+| **Numeración** | Secuencia EE | Secuencia CAEX independiente |
 | **Contenido** | Metadatos del trámite | PDF con datos de creación |
 | **Firma** | No se firma | Firma automática del creador |
 | **Búsqueda** | Por número o contenido | Por número de carátula |
@@ -215,7 +215,7 @@ Cuando se crea un expediente, **automáticamente** se genera:
 ```json
 {
   "expedient_data": {
-    "expedient_number": "EX-2025-000123-TN-DGCO",
+    "expedient_number": "EE-2025-000123-TN-DGCO",
     "created_date": "2025-01-15",
     "expedient_type": "Licitación Pública",
     "reference": "Licitación para compra de equipos informáticos",
@@ -487,7 +487,7 @@ SELECT
     ec.signed_at as created_at
 FROM expedient_covers ec
 JOIN expedients e ON ec.expedient_id = e.expedient_id
-WHERE e.expedient_number = 'EX-2025-000123-TN-DGCO'
+WHERE e.expedient_number = 'EE-2025-000123-TN-DGCO'
 
 UNION ALL
 
@@ -518,7 +518,7 @@ Configuración:
 
 Flujo:
 1. María (MESA) inicia expediente LICPUB
-2. Sistema asigna: EX-2025-001234-TN-DGCO
+2. Sistema asigna: EE-2025-001234-TN-DGCO
 3. Carátula generada: CAEX-2025-007890-TN-DGCO
 4. Administración: Dirección de Compras
 5. Actuante: Mesa de Entradas (pueden vincular documentos)
@@ -534,7 +534,7 @@ Configuración:
 
 Flujo:
 1. Juan (OBRAS) inicia expediente OBRA
-2. Sistema asigna: EX-2025-000567-TN-OBRAS
+2. Sistema asigna: EE-2025-000567-TN-OBRAS
 3. Carátula generada: CAEX-2025-008901-TN-OBRAS
 4. Administración: Dirección de Obras (quien lo creó)
 ```
@@ -545,7 +545,7 @@ Flujo:
 
 ### ✅ Completado
 - [x] Numeración secuencial por año
-- [x] Formato estándar EX-AAAA-NNNNNN-ECO-DEPT
+- [x] Formato estándar EE-AAAA-NNNNNN-ECO-DEPT
 - [x] Generación automática de carátulas
 - [x] Configuración por tipo de expediente
 - [x] Validación de formato y unicidad
