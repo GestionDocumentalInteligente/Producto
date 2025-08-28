@@ -256,6 +256,8 @@ WHERE document_id = ?;
 🎨 **Flujo en Figma:** [Estampado de firma simulada](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-44342&t=sAnWdwFCpjvgUy2t-4)
 🎨 **Flujo en Figma:** [Feedback para usuarios y estados de turnos](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-45316&t=sAnWdwFCpjvgUy2t-4)
 
+![Visualización de Firmas y Firmantes](../assets/images/docs/visualizacion_firmas_firmantes.png)
+
 ### 4.1 Orquestación de Firmas
 
 **Sistema**: Signing Workflow Orchestrator  
@@ -277,6 +279,9 @@ CREATE TYPE document_signer_status AS ENUM (
 **Notificación**: "Documento pendiente de firma"  
 **Estado Personal**: `pending` → `signed`  
 **Estado Documento**: Permanece `sent_to_sign`
+
+![Panel de Estado: Firmar Ahora](../assets/images/docs/panel_estados_firmarahora.png)
+![Panel de Firmas: Esperando Firmas](../assets/images/docs/panel_firmas_esperandofirmas.png)
 
 #### Acciones del Firmante:
 
@@ -309,6 +314,8 @@ WHERE document_id = ?;
 ### 4.4 Gestión de Rechazos
 
 **Trigger**: Firmante selecciona "Rechazar"
+
+![Mensaje de Rechazo de Firma](../assets/images/docs/mensaje_firma_rechazo.png)
 
 🎨 **Flujo en Figma:** [Rechazar firma](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-47878&t=sAnWdwFCpjvgUy2t-4)
 
@@ -418,6 +425,8 @@ COMMIT;
 ---
 
 ## ✅ PASO 6: Oficialización y Post-Firma
+
+![Documento con Firmas Finalizadas](../assets/images/docs/documento_firmas_finalizado.png)
 
 ### 6.1 Documento Oficialmente Válido
 
