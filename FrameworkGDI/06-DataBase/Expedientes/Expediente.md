@@ -137,7 +137,7 @@ CREATE TABLE public.records (
 #### Estados del Expediente
 
 - **INACTIVE**: Recién creado, sin documentos vinculados
-- **ACTIVE**: Activado cuando se vincula documento tipo CAEX en orden 0
+- **ACTIVE**: Se Activa cuando se vincula documento tipo CAEX en orden 0
 - **ARCHIVED**: Expediente finalizado/cerrado
 
 #### Estructura de Campos JSON
