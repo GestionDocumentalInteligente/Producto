@@ -1,6 +1,6 @@
 # Módulo de Expedientes
 
-## 📋 Tabla de Contenidos -test2
+## 📋 Tabla de Contenidos
 
 1. [Descripción General](#descripción-general)
 2. [Arquitectura de Base de Datos](#arquitectura-de-base-de-datos)
