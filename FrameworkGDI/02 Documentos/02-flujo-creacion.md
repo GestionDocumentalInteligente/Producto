@@ -56,7 +56,7 @@ Al iniciar, el sistema presenta una ventana modal donde el usuario debe:
 
 ![Modal Crear Documento](../assets/images/docs/crear_documento_modal.png)
 
-🎨 **Diseño en Figma:** [Crea documento pop up](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-33693&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Crea documento pop up](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-33693&t=sAnWdwFCpjvgUy2t-4)
 
 **Campo**: Dropdown dinámico  
 **Fuente**: `document_types` WHERE `is_active = true`
@@ -118,8 +118,8 @@ INSERT INTO document_draft (
 
 #### Funcionalidades del Editor
 
-🎨 **Diseño en Figma:** [Editor de texto enriquecido](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-39476&t=sAnWdwFCpjvgUy2t-4)
-🎨 **Diseño en Figma:** [Guardar y cargar documento](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-39864&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Editor de texto enriquecido](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-39476&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Guardar y cargar documento](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-39864&t=sAnWdwFCpjvgUy2t-4)
 
 1. **📝 Editor de Texto Enriquecido**
    - Formato: negrita, cursiva, subrayado
@@ -159,8 +159,8 @@ INSERT INTO document_draft (
 
 **B. Gestión de Firmantes**
 
-🎨 **Diseño en Figma:** [Seleccion de firmantes](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-41064&t=sAnWdwFCpjvgUy2t-4)
-🎨 **Diseño en Figma:** [Previsualizar firmantes](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-41862&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Seleccion de firmantes](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-41064&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Previsualizar firmantes](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-41862&t=sAnWdwFCpjvgUy2t-4)
 
 ```sql
 -- Se configuran en document_signers
@@ -175,7 +175,7 @@ INSERT INTO document_signers (
 
 **C. Selección del Numerador**
 
-🎨 **Diseño en Figma:** [Seleccion de numerador](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-40845&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Seleccion de numerador](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-40845&t=sAnWdwFCpjvgUy2t-4)
 
 - Campo especial para usuario que asignará número oficial
 - Solo usuarios con permisos según `document_types_allowed_by_rank`
@@ -205,7 +205,7 @@ INSERT INTO document_signers (
 
 ![Vista Previa PDF](../assets/images/docs/vista_previa_pdf.png)
 
-🎨 **Diseño en Figma:** [Previsualización de documentos PDF](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-40432&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Previsualización de documentos PDF](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-40432&t=sAnWdwFCpjvgUy2t-4)
 
 ### 3.2 Validaciones Pre-Envío
 
@@ -251,10 +251,10 @@ WHERE document_id = ?;
 
 ## ✍️ PASO 4: Proceso de Firmas Secuencial
 
-🎨 **Diseño en Figma:** [Flujo de firmas](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-42221&t=sAnWdwFCpjvgUy2t-4)
-🎨 **Diseño en Figma:** [Vista de firmas](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-43811&t=sAnWdwFCpjvgUy2t-4)
-🎨 **Diseño en Figma:** [Estampado de firma simulada](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-44342&t=sAnWdwFCpjvgUy2t-4)
-🎨 **Diseño en Figma:** [Feedback para usuarios y estados de turnos](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-45316&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Flujo de firmas](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-42221&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Vista de firmas](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-43811&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Estampado de firma simulada](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-44342&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Feedback para usuarios y estados de turnos](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-45316&t=sAnWdwFCpjvgUy2t-4)
 
 ### 4.1 Orquestación de Firmas
 
@@ -310,7 +310,7 @@ WHERE document_id = ?;
 
 **Trigger**: Firmante selecciona "Rechazar"
 
-🎨 **Diseño en Figma:** [Rechazar firma](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-47878&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Rechazar firma](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-47878&t=sAnWdwFCpjvgUy2t-4)
 
 **Proceso**:
 1. Registro en `document_rejections` con motivo
@@ -322,7 +322,7 @@ WHERE document_id = ?;
 
 ## 🔢 PASO 5: Numeración Final (Numerador)
 
-🎨 **Diseño en Figma:** [Firma del numerador](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-46252&t=sAnWdwFCpjvgUy2t-4)
+🎨 **Flujo en Figma:** [Firma del numerador](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-46252&t=sAnWdwFCpjvgUy2t-4)
 
 ### 5.1 Identificación del Numerador
 
