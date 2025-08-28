@@ -280,7 +280,6 @@ CREATE TYPE document_signer_status AS ENUM (
 **Estado Personal**: `pending` → `signed`  
 **Estado Documento**: Permanece `sent_to_sign`
 
-![Panel de Estado: Firmar Ahora](../assets/images/docs/panel_estados_firmarahora.png)
 ![Panel de Firmas: Esperando Firmas](../assets/images/docs/panel_firmas_esperandofirmas.png)
 
 #### Acciones del Firmante:
@@ -384,6 +383,9 @@ WHERE nr.numeration_requests_id = ?;
 ### 5.3 Transición Final: `sent_to_sign` → `signed`
 
 **Trigger**: Numerador completa su firma
+
+![Panel de Estado: Firmar Ahora](../assets/images/docs/panel_estados_firmarahora.png)
+![Panel de Documentos Firmado](../assets/images/docs/panel-documentos-firmado.png)
 
 ```sql
 BEGIN TRANSACTION;
