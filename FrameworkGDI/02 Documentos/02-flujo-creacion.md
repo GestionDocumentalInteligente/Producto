@@ -106,7 +106,7 @@ INSERT INTO document_draft (
 
 ### 2.1 Pantalla Principal de Edición
 
-![Pantalla Edición Documento](../assets/images/docs/pantalla_edicion_documento.png)
+![Pantalla Edición Documento](../assets/images/docs/editor-modal-documento.png)
 
 ### 2.2 Editor Colaborativo en Tiempo Real
 
