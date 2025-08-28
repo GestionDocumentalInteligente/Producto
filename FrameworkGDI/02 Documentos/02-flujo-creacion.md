@@ -256,8 +256,6 @@ WHERE document_id = ?;
 🎨 **Flujo en Figma:** [Estampado de firma simulada](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-44342&t=sAnWdwFCpjvgUy2t-4)
 🎨 **Flujo en Figma:** [Feedback para usuarios y estados de turnos](https://www.figma.com/design/Q7vt8OkQcbp53kO4SGGUu1/Documentos?node-id=27-45316&t=sAnWdwFCpjvgUy2t-4)
 
-![Visualización de Firmas y Firmantes](../assets/images/docs/visualizacion_firmas_firmantes.png)
-
 ### 4.1 Orquestación de Firmas
 
 **Sistema**: Signing Workflow Orchestrator  
@@ -385,6 +383,7 @@ WHERE nr.numeration_requests_id = ?;
 **Trigger**: Numerador completa su firma
 
 ![Panel de Estado: Firmar Ahora](../assets/images/docs/panel_estados_firmarahora.png)
+![Visualización de Firmas y Firmantes](../assets/images/docs/visualizacion_firmas_firmantes.png)
 ![Panel de Documentos Firmado](../assets/images/docs/panel-documentos-firmado.png)
 
 ```sql
