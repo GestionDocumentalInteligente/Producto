@@ -27,7 +27,7 @@ El sistema implementa una **separación clara** entre documentos en proceso y do
 **`document_draft`** → Documentos en creación, edición y firma  
 **`official_documents`** → Documentos finalizados con validez legal
 
-![Arquitectura Dual Documentos](./images/arquitectura-dual-documentos.png)
+
 
 ## 🔄 Estados del Documento - Implementación Real
 
@@ -51,7 +51,7 @@ El sistema implementa una **separación clara** entre documentos en proceso y do
 | **`cancelled`** | Cancelado antes de completar | Solo consulta histórica |
 | **`archived`** | Archivado post-finalización | Solo consulta, no modificable |
 
-![Diagrama Estados Documentos](./images/estados-documentos-flujo.png)
+
 
 ## 👥 Editor Colaborativo
 
@@ -71,7 +71,6 @@ Cada documento recibe un **identificador único de pad colaborativo** que permit
 3. **Edición**: Cambios se sincronizan automáticamente
 4. **Finalización**: Al enviar a firma, se congela el contenido
 
-![Editor Colaborativo](./images/editor-colaborativo-flujo.png)
 
 ## ❌ Gestión de Rechazos y Correcciones
 
@@ -86,65 +85,15 @@ Cuando un firmante rechaza un documento:
 
 ### Tabla de Rechazos
 ```sql
-document_rejections:
-- rejection_id (UUID)
-- document_id (referencia al documento)
-- rejected_by (usuario que rechaza)
-- reason (motivo del rechazo)
-- rejected_at (timestamp)
+CREATE TABLE public.document_rejections (
+    rejection_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    document_id uuid NOT NULL,
+    rejected_by uuid NOT NULL,
+    reason text,
+    rejected_at timestamp without time zone DEFAULT now(),
+    audit_data jsonb
+);
 ```
-
-### Flujo de Corrección
-
-![Flujo Rechazos Correcciones](./images/flujo-rechazos-correcciones.png)
-
-## 🗑️ Eliminación: Lógica vs Física
-
-### Eliminación Lógica (Implementada)
-
-**Campo**: `is_deleted = true`
-
-**Ventajas**:
-- ✅ **Preserva integridad** histórica
-- ✅ **Mantiene trazabilidad** para auditorías
-- ✅ **Permite recuperación** si es necesario
-- ✅ **Cumple normativas** de preservación documental
-
-### Eliminación Física (NO Implementada)
-
-**Razón**: Los documentos oficiales municipales deben preservarse por normativas legales.
-
-### Reglas de Eliminación
-
-| Estado Documento | Eliminación Permitida | Observaciones |
-|-----------------|---------------------|---------------|
-| `draft` | ✅ Lógica | Marca como eliminado, preserva para auditoría |
-| `sent_to_sign` | ❌ No permitida | Debe cancelarse formalmente |
-| `signed` | ❌ Nunca | Documento oficial, preservación obligatoria |
-| `rejected` | ✅ Lógica | Después de proceso de corrección |
-
-## 🏛️ Integración con Departments
-
-### Estructura Organizacional
-
-El módulo respeta la jerarquía municipal implementada:
-
-```
-municipalities
-    ↓
-departments (secretarías, direcciones)
-    ↓
-sectors (áreas específicas)
-    ↓
-users (empleados, funcionarios)
-```
-
-### Permisos por Department
-
-- **`enabled_document_types_by_department`**: Define qué tipos puede usar cada department
-- **`document_types_allowed_by_rank`**: Controla qué jerarquías pueden firmar cada tipo
-
-![Integración Departments](./images/integracion-departments.png)
 
 ## 📊 Casos de Uso Principales
 

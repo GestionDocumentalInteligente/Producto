@@ -204,13 +204,13 @@ Documento rechazado por uno o más firmantes durante el proceso de firma. Requie
 ### Datos de Rechazo
 ```sql
 -- Tabla de rechazos
-CREATE TABLE document_rejections (
-    rejection_id UUID PRIMARY KEY,
-    document_id UUID NOT NULL,
-    rejected_by UUID NOT NULL,        -- Usuario que rechaza
-    reason TEXT,                      -- Motivo del rechazo
-    rejected_at TIMESTAMP DEFAULT NOW(),
-    audit_data JSONB
+CREATE TABLE public.document_rejections (
+    rejection_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    document_id uuid NOT NULL,
+    rejected_by uuid NOT NULL,
+    reason text,
+    rejected_at timestamp without time zone DEFAULT now(),
+    audit_data jsonb
 );
 ```
 
@@ -281,12 +281,18 @@ WHERE document_id = ?;
 -- 3. Crear documento oficial
 INSERT INTO official_documents (
     document_id,
+    document_type_id,
+    numeration_requests_id,
+    reference,
+    content,
     official_number,
+    year,
+    department_id,
+    numerator_id,
     signed_at,
     signed_pdf_url,
-    numerator_id,
-    signers -- JSON con todos los firmantes
-) VALUES (?, ?, NOW(), ?, ?, ?);
+    signers
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?);
 
 -- 4. Finalizar estado draft
 UPDATE document_draft 
