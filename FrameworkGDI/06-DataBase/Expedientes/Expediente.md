@@ -186,7 +186,7 @@ CREATE TABLE public.records (
 
 ### 4. Action Requests (`action_requests`)
 
-**Propósito**: Gestionar solicitudes de actuación abiertas entre sectores.
+**Propósito**: Gestionar solicitudes de actuación abiertas entre sectores. Esta tabla permite el seguimiento de peticiones de intervención sin transferir la administración del expediente.
 
 ```sql
 CREATE TABLE public.action_requests (
@@ -205,4 +205,69 @@ CREATE TABLE public.action_requests (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     audit_data JSONB DEFAULT '{}'
 );
+```
+
+#### Campos y su Función
+
+**Identificación y Referencias:**
+- `id`: Identificador único de la solicitud
+- `record_id`: Expediente al que pertenece esta solicitud
+- `movement_id`: Referencia al movimiento que generó esta solicitud (en el JSON movements)
+
+**Participantes:**
+- `requesting_department_id`: Sector que solicita la actuación
+- `required_department_id`: Sector al que se le solicita actuar
+- `assigned_user_id`: Usuario específico asignado para atender la solicitud (opcional)
+
+**Información de la Solicitud:**
+- `reason`: Descripción del motivo de la solicitud (máximo 254 caracteres)
+- `status`: Estado actual de la solicitud
+  - `pending`: Recién creada, sin asignar
+  - `in_progress`: Asignada y en proceso
+  - `completed`: Finalizada
+- `creates_document`: Indica si la actuación debe generar un documento formal
+
+**Seguimiento Temporal:**
+- `request_date`: Fecha y hora de creación de la solicitud
+- `response_date`: Fecha y hora de finalización (NULL si está pendiente)
+- `observations`: Comentarios o notas sobre la respuesta/resolución
+- `created_at`: Timestamp de creación del registro
+- `audit_data`: Metadatos de auditoría en formato JSON
+
+#### Flujo Típico de una Solicitud
+
+1. **Creación:**
+   - Sector A crea solicitud → `status = 'pending'`
+   - Se registra `request_date`
+   - Se vincula al movimiento correspondiente
+
+2. **Asignación:**
+   - Sector B asigna responsable
+   - Se actualiza `assigned_user_id`
+   - Cambia a `status = 'in_progress'`
+
+3. **Finalización:**
+   - Responsable completa la tarea
+   - Se registra `response_date`
+   - Se agregan `observations`
+   - Cambia a `status = 'completed'`
+
+#### Ejemplo de Uso
+
+```sql
+-- Crear una solicitud de dictamen legal
+INSERT INTO action_requests (
+    record_id,
+    movement_id,
+    requesting_department_id,
+    required_department_id,
+    reason,
+    creates_document
+) VALUES (
+    'uuid-expediente',
+    'uuid-movimiento',
+    'uuid-sector-compras',
+    'uuid-sector-legal',
+    'Se requiere dictamen legal para continuidad de licitación',
+    true
 ```
