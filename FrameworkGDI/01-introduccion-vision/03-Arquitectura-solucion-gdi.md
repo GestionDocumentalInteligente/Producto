@@ -82,3 +82,35 @@ Distribuido bajo la licencia AGPLv3, GDI fomenta una comunidad activa de desarro
 - Orquestación Kubernetes
 - CI/CD automatizado
 - Monitoreo y observabilidad
+
+## Diagrama de Interacción de Módulos Principales
+
+A continuación, se presenta un diagrama simplificado que ilustra las interacciones clave entre los módulos principales del sistema GDI.
+
+```
++-----------------+
+|   Organigrama   |
+|      (ORG)      |
++--------+--------+
+         |
+         | Utiliza para roles/permisos
+         v
++--------+--------+       +-----------------+
+|   Documentos    | <---> |   Expedientes   |
+|      (DOC)      |       |      (EXP)      |
++--------+--------+       +--------+--------+
+         ^                         ^
+         |                         |
+         | Configura/Gestiona      | Configura/Gestiona
+         v                         v
++---------------------------------------------------+
+|                   Backoffice (BKO)                |
+| (Gestiona Tipos DOC, Tipos EXP, Estructura ORG)   |
++---------------------------------------------------+
+         |
+         | Persiste/Recupera Datos
+         v
++---------------------------------------------------+
+|                   Base de Datos (DB)              |
++---------------------------------------------------+
+```
