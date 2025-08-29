@@ -6,7 +6,7 @@ El proceso de creación de un expediente en GDI está diseñado para ser intuiti
 
 ### Inicio de la Creación
 
-El usuario inicia el proceso seleccionando el Tipo de Expediente desde un catálogo predefinido (campo Dropdown). Esta selección es obligatoria y depende de la configuración de tipos de expediente definida por el superadministrador en el Backoffice.
+El usuario inicia el proceso seleccionando el Tipo de Expediente desde un catálogo predefinido (campo Dropdown). Esta selección es obligatoria y depende de la configuración de tipos de expediente definida por el administrador en el Backoffice.
 
 > Para más detalles sobre cómo se configuran los Tipos de expedientes, ver sección: Backoffice – Configuración de Expedientes.
 
@@ -16,7 +16,7 @@ El usuario inicia el proceso seleccionando el Tipo de Expediente desde un catál
 
 Campo desplegable (Dropdown) que muestra un listado de opciones habilitadas de acuerdo al tipo de usuario.
 
-**Listado Dinámico y Filtrado**: Este listado muestra únicamente los tipos de expediente que el Super-Administrador habilitó y configuró en Backoffice, sección "Tipo de Expediente". Allí también se definen las reparticiones autorizados para caratular cada uno.
+**Listado Dinámico y Filtrado**: Este listado muestra únicamente los tipos de expediente que el Administrador habilitó y configuró en Backoffice, sección "Tipo de Expediente". Allí también se definen las reparticiones autorizados para caratular cada uno.
 
 **Ejemplo**: Si el tipo de expediente "Licitación Pública" está configurado para repartición caratuladora específica "Dirección de Compras", cualquier usuario puede crear este tipo de expediente, pero la carátula oficial siempre se asignará a la "Dirección de Compras".
 
