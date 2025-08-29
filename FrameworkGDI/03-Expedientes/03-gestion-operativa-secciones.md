@@ -12,6 +12,8 @@ El expediente entra inmediatamente en su fase operativa, donde los usuarios auto
 
 ### Asignación de Expedientes
 
+🎨 **Flujo en Figma:** [Asignación de Expedientes](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=6796-14077&t=xkPc1JncRGCA4nzR-4)
+
 La funcionalidad de Asignar Expediente en GDI es una característica clave que potencia la colaboración y la eficiencia en la gestión. Permite designar un responsable dentro de la repartición administradora para el seguimiento y gestión de un expediente. Es un dato informal que fundamentalmente propicia designar un responsable de tramitación.
 
 ![Asignación Expediente Usuario](../assets/images/exp/asignacion_expediente_usuario.png)
@@ -45,6 +47,8 @@ Esta pestaña permite visualizar y gestionar todos los documentos vinculados que
 
 #### 4.1.1 Vinculación de documentos
 
+🎨 **Flujo en Figma:** [Vinculación de Documentos](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=6803-9806&t=xkPc1JncRGCA4nzR-4)
+
 **Proceso**: Desde la vista detallada del expediente, el usuario puede iniciar la acción de "Vincular Documento". Se abre una interfaz que permite buscar y seleccionar documentos ya existentes en GDI.
 
 ![Modal Vincular Documento](../assets/images/exp/modal_vincular_documento.png)
@@ -60,6 +64,8 @@ Una vez seleccionado el documento se abre una previsualización del número de d
 ![Documento Vincular Expediente](../assets/images/exp/Documento_vincular_expediente.png)
 
 #### 4.1.2 Subsanación de documentos
+
+🎨 **Flujo en Figma:** [Subsanación de Documentos](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=6803-13855&t=xkPc1JncRGCA4nzR-4)
 
 **Propósito**: Permite reemplazar un documento previamente vinculado al expediente, manteniendo un registro. Esto es crucial para corregir errores sin perder el historial, los errores existirán y se deben poder corregir. Se debe vincular un documento para justificar la acción.
 
@@ -88,6 +94,8 @@ La sección de "Acciones" dentro del Módulo de un Expediente es el centro neur�
 Desde esta área, el usuario puede visualizar el historial de acciones, las acciones en curso y las acciones finalizadas, proporcionando una visión completa del progreso del expediente.
 
 #### 4.2.1 Solicitud de Actuación: Requerimientos Inter-áreas
+
+🎨 **Flujo en Figma:** [Solicitud de Actuación](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=7203-8422&t=xkPc1JncRGCA4nzR-4)
 
 La funcionalidad de "Solicitar Actuación" es una herramienta fundamental para la coordinación entre sectores. Permite a un usuario requerir una acción específica a un sector determinado, asegurando que las tareas necesarias para el avance del expediente sean ejecutadas de manera eficiente.
 
@@ -128,6 +136,8 @@ Una vez realizada la solicitud de actuación, esta queda registrada en el panel 
 ![Sección Historial Acciones](../assets/images/exp/Seccion_historial_acciones.png)
 
 ### 4.3 Sección Asistente AI
+
+🎨 **Flujo en Figma:** [Asistente AI](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=6803-14625&t=xkPc1JncRGCA4nzR-4)
 
 El Asistente de IA integrado en cada expediente transforma la manera en que los usuarios interactúan con la información y gestionan sus trámites. Esta funcionalidad nativa de inteligencia artificial permite una consulta conversacional, resúmenes rápidos y la identificación de tareas pendientes, optimizando la eficiencia y la toma de decisiones.
 
