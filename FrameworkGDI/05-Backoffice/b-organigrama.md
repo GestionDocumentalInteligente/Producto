@@ -6,14 +6,14 @@ Este documento detalla los flujos operativos para la gestión de la estructura o
 
 ### 1.1 Secuencia de Configuración Recomendada
 
-**Prerrequisito:** Instancia de GDI configurada con Super-Administrador activo.
+**Prerrequisito:** Instancia de GDI configurada con Administrador activo.
 
 ```
 1. Crear Municipio → 2. Crear Reparticiones → 3. Crear Sectores → 4. Asignar Titulares → 5. Dar de Alta Usuarios
 ```
 
 #### Paso 1: Configuración del Municipio
-**Responsable:** Super-Administrador desde Backoffice  
+**Responsable:** Administrador desde Backoffice  
 **Ubicación:** Backoffice > Información General
 
 ```sql
@@ -32,7 +32,7 @@ INSERT INTO municipalities (
 ```
 
 #### Paso 2: Creación de Reparticiones Principales
-**Responsable:** Super-Administrador  
+**Responsable:** Administrador  
 **Ubicación:** Backoffice > Organigrama > Reparticiones
 
 **Flujo Técnico:**
@@ -59,7 +59,7 @@ INSERT INTO departments (
 ```
 
 #### Paso 3: Creación de Sectores
-**Responsable:** Super-Administrador  
+**Responsable:** Administrador  
 **Ubicación:** Backoffice > Organigrama > Sectores
 
 **Validaciones:**
@@ -80,7 +80,7 @@ INSERT INTO sectors (
 ```
 
 #### Paso 4: Asignación de Titulares
-**Responsable:** Super-Administrador  
+**Responsable:** Administrador  
 **Prerrequisito:** Usuario debe existir en el sistema
 
 **Proceso:**
@@ -322,7 +322,7 @@ SELECT EXISTS (
 
 ### 4.1 Cambio de Titular de Repartición
 
-**Responsable:** Super-Administrador únicamente  
+**Responsable:** Administrador únicamente  
 **Ubicación:** Backoffice > Organigrama > Reparticiones
 
 **Proceso:**
@@ -355,7 +355,7 @@ COMMIT;
 
 ### 4.2 Transferencia de Usuario Entre Reparticiones
 
-**Responsable:** Super-Administrador únicamente  
+**Responsable:** Administrador únicamente  
 **Complejidad:** Alta (afecta permisos y documentos)
 
 **Proceso:**
@@ -388,7 +388,7 @@ COMMIT;
 
 ### 4.3 Reestructuración Organizacional
 
-**Responsable:** Super-Administrador  
+**Responsable:** Administrador  
 **Casos típicos:**
 - Fusión de reparticiones
 - División de sectores
@@ -422,7 +422,7 @@ COMMIT;
 
 ### 5.1 Funcionalidad de Importación CSV/Excel
 
-**Responsable:** Super-Administrador desde Backoffice  
+**Responsable:** Administrador desde Backoffice  
 **Ubicación:** Backoffice > Organigrama > Carga Masiva
 
 **Formato de Archivo:**
@@ -498,7 +498,7 @@ WHERE dh.user_id = ? -- titular actual
 GROUP BY s.sector_id, s.name;
 ```
 
-### 6.2 Reportes para Super-Administrador
+### 6.2 Reportes para Administrador
 
 **Reportes Disponibles:**
 - Organigrama completo del municipio
