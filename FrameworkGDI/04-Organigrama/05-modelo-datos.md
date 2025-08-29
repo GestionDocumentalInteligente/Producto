@@ -14,6 +14,8 @@ El módulo Organigrama se basa en  tablas principales que definen la estructura 
 - Datos de contacto (email, celular)
 - Datos del sistema (username, estado, fechas)
 
+*(Ver estructura detallada en `06-DataBase/Organigrama.md`)*
+
 ## Tabla: reparticiones
 
 <!-- [COMPLETAR: Estructura de tabla reparticiones desde Supabase] -->
@@ -22,6 +24,8 @@ El módulo Organigrama se basa en  tablas principales que definen la estructura 
 - Identificador único (UUID)
 - Información básica (nombre, acrónimo)
 - Estado y metadatos
+
+*(Ver estructura detallada en `06-DataBase/Organigrama.md`)*
 
 ## Tabla: sectores
 
@@ -32,17 +36,23 @@ El módulo Organigrama se basa en  tablas principales que definen la estructura 
 - Relación con repartición padre
 - Información del sector (nombre, código, acrónimo)
 
+*(Ver estructura detallada en `06-DataBase/Organigrama.md`)*
+
 ## Tabla: usuario_sectores
 
 <!-- [COMPLETAR: Estructura de tabla usuario_sectores desde Supabase] -->
 
 **Relación muchos-a-muchos entre usuarios y sectores.**
 
+*(Ver estructura detallada en `06-DataBase/Organigrama.md`)*
+
 ## Tabla: reparticion_titulares
 
 <!-- [COMPLETAR: Estructura de tabla reparticion_titulares desde Supabase] -->
 
 **Relación muchos-a-muchos entre usuarios y reparticiones como titulares.**
+
+*(Ver estructura detallada en `06-DataBase/Organigrama.md`)*
 
 ## Relaciones y Constraints
 

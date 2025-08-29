@@ -20,7 +20,7 @@ Establecer las **reglas de negocio**, la **identidad visual**, la **estructura o
 
 ### 2.1 Rol Administrador
 
-El acceso al Backoffice está **exclusivamente restringido** a usuarios con el rol de **Administrador**. Este es un rol de máximo privilegio, diseñado para un número limitado de personas de confianza dentro de la institución, responsables de la configuración y funcionamiento de la plataforma.
+El acceso al Backoffice está **exclusivamente restringido** a usuarios con el rol de **Administrador** (definido en `roles.role_name`). Este es un rol de máximo privilegio, asignado a través de la tabla `user_roles`, diseñado para un número limitado de personas de confianza dentro de la institución, responsables de la configuración y funcionamiento de la plataforma.
 
 #### Características del Administrador:
 
@@ -34,8 +34,8 @@ El acceso al Backoffice está **exclusivamente restringido** a usuarios con el r
 
 #### Medidas de Seguridad:
 
-- Solo usuarios con rol "Administrador" pueden acceder
+- Solo usuarios con rol "Administrador" (registrado en `user_roles`) pueden acceder
 - Dominio separado del sistema principal de GDI
 - Autenticación adicional requerida
-- Logs de auditoría completos para todas las acciones realizadas
+- Logs de auditoría completos para todas las acciones realizadas (almacenados en `audit_data` o `system_audit_log` si está implementado).
 - Sesiones con timeout de seguridad
