@@ -7,7 +7,7 @@ El Backoffice está organizado en **7 secciones principales**, cada una diseñad
 | **Sección** | **Propósito** | **Elementos Configurables** |
 |-------------|---------------|------------------------------|
 | **Información General** | Datos oficiales e identidad visual de la municipalidad | Nombre oficial, tipo de entidad, datos fiscales, logotipo, colores institucionales, frase anual |
-| **Accesos y Control** | Gestión de usuarios y permisos | Usuarios de super administrador |
+| **Accesos y Control** | Gestión de usuarios y permisos | Usuarios de administrador |
 | **Organigrama** | Estructura organizacional | Reparticiones, sectores, responsables |
 | **Documentos** | Tipos de documentos disponibles | Plantillas, firmas, numeración |
 | **Expedientes** | Tipos de expedientes del sistema | Configuración de trámites y procesos |
@@ -25,7 +25,7 @@ BACKOFFICE -----> SISTEMA GDI PRINCIPAL
     ├── Organigrama ───────────► Estructura de usuarios y permisos  
     ├── Documentos ────────────► Tipos disponibles en creación
     ├── Expedientes ───────────► Tipos disponibles en caratulación
-    ├── Accesos y Control ─────► Gestión de super-administradores
+    ├── Accesos y Control ─────► Gestión de administradores
     ├── Integraciones ─────────► Servicios externos conectados
     └── API Keys ──────────────► Credenciales para integraciones
 ```
@@ -36,5 +36,5 @@ BACKOFFICE -----> SISTEMA GDI PRINCIPAL
 - **Modificaciones en Organigrama**: Actualizan la estructura de usuarios y permisos en tiempo real  
 - **Configuración de Documentos**: Los nuevos tipos aparecen instantáneamente en los dropdowns de creación
 - **Ajustes en Expedientes**: Los tipos configurados se habilitan de inmediato para caratulación
-- **Gestión de Accesos**: Los cambios en super-administradores se aplican en la siguiente sesión
+- **Gestión de Accesos**: Los cambios en administradores se aplican en la siguiente sesión
 - **Integraciones y API Keys**: Las conexiones se establecen o cortan inmediatamente

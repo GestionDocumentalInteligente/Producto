@@ -2,7 +2,7 @@
 
 ## 1. ¿Qué es el Backoffice de GDI?
 
-El **Backoffice de GDI** es el centro neurálgico de administración y configuración del sistema. Es una **interfaz web separada**, con su propio dominio de acceso, diseñada específicamente para que los Super-Administradores puedan adaptar y personalizar cada instancia de GDI a las necesidades específicas de su municipio.
+El **Backoffice de GDI** es el centro neurálgico de administración y configuración del sistema. Es una **interfaz web separada**, con su propio dominio de acceso, diseñada específicamente para que los Administradores puedan adaptar y personalizar cada instancia de GDI a las necesidades específicas de su municipio.
 
 ### Propósito Principal
 
@@ -18,11 +18,11 @@ Establecer las **reglas de negocio**, la **identidad visual**, la **estructura o
 
 ## 2. Acceso y Permisos
 
-### 2.1 Rol Super-Administrador
+### 2.1 Rol Administrador
 
-El acceso al Backoffice está **exclusivamente restringido** a usuarios con el rol de **Super-Administrador**. Este es un rol de máximo privilegio, diseñado para un número limitado de personas de confianza dentro de la institución, responsables de la configuración y funcionamiento de la plataforma.
+El acceso al Backoffice está **exclusivamente restringido** a usuarios con el rol de **Administrador**. Este es un rol de máximo privilegio, diseñado para un número limitado de personas de confianza dentro de la institución, responsables de la configuración y funcionamiento de la plataforma.
 
-#### Características del Super-Administrador:
+#### Características del Administrador:
 
 - Acceso completo a todas las configuraciones del sistema
 - Capacidad de modificar parámetros críticos y reglas de negocio
@@ -34,7 +34,7 @@ El acceso al Backoffice está **exclusivamente restringido** a usuarios con el r
 
 #### Medidas de Seguridad:
 
-- Solo usuarios con rol "Super-Administrador" pueden acceder
+- Solo usuarios con rol "Administrador" pueden acceder
 - Dominio separado del sistema principal de GDI
 - Autenticación adicional requerida
 - Logs de auditoría completos para todas las acciones realizadas

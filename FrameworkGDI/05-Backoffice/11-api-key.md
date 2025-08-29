@@ -2,7 +2,7 @@
 
 ## Propósito de la Sección
 
-La **Configuración de API Keys** es el repositorio centralizado donde los Super-Administradores gestionan todas las **credenciales y tokens** que GDI necesita para conectarse a servicios externos. Funciona como un **administrador de credenciales** seguro, similar a plataformas como OpenAI o AWS Console.
+La **Configuración de API Keys** es el repositorio centralizado donde los Administradores gestionan todas las **credenciales y tokens** que GDI necesita para conectarse a servicios externos. Funciona como un **administrador de credenciales** seguro, similar a plataformas como OpenAI o AWS Console.
 
 ### Objetivos principales:
 
@@ -146,7 +146,7 @@ CREADA → [Configurar] → ACTIVA → [Usar] → ACTIVA
 
 #### Proceso:
 
-1. Super-Admin → [Crear Nueva Key]
+1. Admin → [Crear Nueva Key]
 2. Completar formulario → [Validar formato]
 3. Test de conectividad → [Verificar funcionamiento]
 4. Guardar cifrado → [Confirmar creación]
@@ -226,7 +226,7 @@ Imagen pantalla dashboard monitoreo
 
 #### Control de Acceso:
 
-- **Principio de menor privilegio**: Solo Super-Admins
+- **Principio de menor privilegio**: Solo Admins
 - **Separación de responsabilidades**: Auditoría de accesos
 - **Logs detallados**: Quién accedió a qué credencial
 - **Alertas de seguridad**: Accesos inusuales o masivos
@@ -264,7 +264,7 @@ Tabla SQL de auditoría
 
 ### Flujo de Uso Operativo:
 
-1. **Super-Admin configura API Key** en Backoffice
+1. **Admin configura API Key** en Backoffice
 2. **Sistema valida credencial** con test de conectividad
 3. **Integración usa credencial** para llamadas externas
 4. **Monitoreo registra uso** y métricas

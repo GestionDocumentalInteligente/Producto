@@ -2,7 +2,7 @@
 
 ## Propósito de la Sección
 
-El Backoffice de Organigrama es la sección del sistema administrativo donde los **Super-Administradores** crean y gestionan toda la estructura organizacional de la municipalidad. Esta funcionalidad permite construir el árbol jerárquico que incluye **Reparticiones** y **Sectores**, asignando responsables (titulares) que tendrán poder de gestión dentro del sistema GDI.
+El Backoffice de Organigrama es la sección del sistema administrativo donde los **Administradores** crean y gestionan toda la estructura organizacional de la municipalidad. Esta funcionalidad permite construir el árbol jerárquico que incluye **Reparticiones** y **Sectores**, asignando responsables (titulares) que tendrán poder de gestión dentro del sistema GDI.
 
 ## Objetivos Principales
 
@@ -39,7 +39,7 @@ MUNICIPALIDAD
 
 #### Crear Nueva Repartición
 
-**Acceso**: Solo Super-Administradores
+**Acceso**: Solo Administradores
 
 **Campos Obligatorios:**
 
@@ -161,7 +161,7 @@ MUNICIPALIDAD
 
 ### Funcionalidad de Importación CSV/Excel
 
-**Acceso**: Solo Super-Administradores desde Backoffice
+**Acceso**: Solo Administradores desde Backoffice
 **Alcance**: Organización completa (todas las reparticiones)
 
 ### Proceso Simplificado:
@@ -277,7 +277,7 @@ Tabla de endpoints para usuarios
 
 ### Acceso Restringido
 
-- Solo Super-Administradores pueden acceder
+- Solo Administradores pueden acceder
 - Autenticación robusta requerida
 - Sesiones con timeout de seguridad
 - Logs de auditoría completos

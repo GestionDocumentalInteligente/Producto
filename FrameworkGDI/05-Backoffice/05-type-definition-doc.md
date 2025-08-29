@@ -2,7 +2,7 @@
 
 ## 1. Propósito y Objetivos Clave
 
-La Configuración de Documentos permite a los Super-Administradores definir y personalizar los parámetros fundamentales para la creación, gestión y formalización de documentos electrónicos dentro del sistema GDI. El objetivo es asegurar que cada documento cumpla con las normativas y requisitos específicos definidos por la municipalidad.
+La Configuración de Documentos permite a los Administradores definir y personalizar los parámetros fundamentales para la creación, gestión y formalización de documentos electrónicos dentro del sistema GDI. El objetivo es asegurar que cada documento cumpla con las normativas y requisitos específicos definidos por la municipalidad.
 
 ### Objetivos principales:
 
@@ -29,7 +29,7 @@ Estos campos definen la identidad única del tipo de documento y no pueden ser m
 
 ### 2.2 Parámetros de Comportamiento y Permisos (Modificables)
 
-Estos campos definen cómo se comporta el tipo de documento y quién puede interactuar con él. Pueden ser modificados por un Super-Administrador en cualquier momento, aunque algunos cambios solo afectarán a documentos futuros.
+Estos campos definen cómo se comporta el tipo de documento y quién puede interactuar con él. Pueden ser modificados por un Administrador en cualquier momento, aunque algunos cambios solo afectarán a documentos futuros.
 
 | **Parámetro** | **Descripción y Uso** | **Validaciones / Opciones** |
 |---------------|----------------------|------------------------------|
@@ -127,7 +127,7 @@ GDI incluye un catálogo de plantillas pre-configuradas para los documentos más
 
 ### 5.2 Personalización de Plantillas
 
-Al seleccionar una plantilla, el Super-Administrador puede ajustar:
+Al seleccionar una plantilla, el Administrador puede ajustar:
 
 - **Reparticiones habilitadas**: Cambiar qué titulares pueden firmar el documento
 - **Tipo de firma**: Modificar el método de firma según políticas locales

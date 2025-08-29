@@ -2,7 +2,7 @@
 
 ## 1. Propósito de la Sección
 
-La sección de **Información General** es el primer y más fundamental paso en la configuración de una nueva instancia de GDI. Permite al Super-Administrador establecer la identidad oficial y la apariencia visual del municipio u organismo, asegurando que estos elementos se apliquen de manera consistente en todo el sistema.
+La sección de **Información General** es el primer y más fundamental paso en la configuración de una nueva instancia de GDI. Permite al Administrador establecer la identidad oficial y la apariencia visual del municipio u organismo, asegurando que estos elementos se apliquen de manera consistente en todo el sistema.
 
 ## 2. Información Institucional
 
@@ -36,7 +36,7 @@ Esta sección personaliza la apariencia de GDI para que coincida con la imagen d
 
 ### Proceso paso a paso:
 
-1. **Completar Campos**: El Super-Administrador rellena todos los campos de "Información Institucional" y sube los archivos de "Identidad Visual".
+1. **Completar Campos**: El Administrador rellena todos los campos de "Información Institucional" y sube los archivos de "Identidad Visual".
 
 2. **Validaciones**: El sistema valida que los campos obligatorios (como Nombre y Acrónimo) no estén vacíos y que los archivos subidos cumplan con las restricciones de formato y tamaño.
 

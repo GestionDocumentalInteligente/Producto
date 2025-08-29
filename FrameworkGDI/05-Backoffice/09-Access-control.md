@@ -2,58 +2,58 @@
 
 ## Propósito de la Sección
 
-La **Configuración de Accesos y Control** permite a los Super-Administradores gestionar el acceso al Backoffice de GDI, controlando quién puede administrar el sistema y configurar sus parámetros críticos. Esta sección implementa un modelo de **administración distribuida** donde múltiples Super-Administradores pueden colaborar en la gestión del sistema.
+La **Configuración de Accesos y Control** permite a los Administradores gestionar el acceso al Backoffice de GDI, controlando quién puede administrar el sistema y configurar sus parámetros críticos. Esta sección implementa un modelo de **administración distribuida** donde múltiples Administradores pueden colaborar en la gestión del sistema.
 
 ### Objetivos principales:
 
 - **Control de acceso granular**: Gestionar quién puede acceder al Backoffice
-- **Administración colaborativa**: Permitir múltiples Super-Administradores con iguales privilegios
+- **Administración colaborativa**: Permitir múltiples Administradores con iguales privilegios
 - **Seguridad robusta**: Implementar mejores prácticas de autenticación y autorización
 - **Auditoría completa**: Mantener trazabilidad de todas las acciones administrativas
 - **Gestión simplificada**: Proveer herramientas intuitivas para administrar accesos
 
 ### Características principales:
 
-- **Límite controlado**: Máximo 6 Super-Administradores por instalación
-- **Igualdad de privilegios**: Todos los Super-Administradores tienen los mismos permisos
-- **Gestión mutua**: Los Super-Administradores pueden gestionar otros Super-Administradores
+- **Límite controlado**: Máximo 6 Administradores por instalación
+- **Igualdad de privilegios**: Todos los Administradores tienen los mismos permisos
+- **Gestión mutua**: Los Administradores pueden gestionar otros Administradores
 - **Invitaciones seguras**: Sistema de invitación por email con expiración temporal
 - **Flexibilidad de usuarios**: Soporte para usuarios nuevos y existentes
 
-## Gestión de Super-Administradores
+## Gestión de Administradores
 
 ### Características del Sistema
 
 #### Modelo de Privilegios Equitativos
 
-- **Todos los Super-Administradores tienen idénticos permisos**
-- **No existe jerarquía** entre Super-Administradores
-- **Cualquier Super-Admin puede gestionar otros Super-Admins**
+- **Todos los Administradores tienen idénticos permisos**
+- **No existe jerarquía** entre Administradores
+- **Cualquier Admin puede gestionar otros Admins**
 - **Decisiones por consenso** (no hay "super usuario principal")
 
 #### Límites del Sistema
 
-- **Máximo 6 Super-Administradores simultáneos**
+- **Máximo 6 Administradores simultáneos**
 - **Límite aplicado a nivel de aplicación y base de datos**
 - **Restricción configurable** (ajustable en configuración del sistema)
 
 ### Operaciones Disponibles
 
-#### Gestión de Usuarios Super-Administrador
+#### Gestión de Usuarios Administrador
 
 | **Acción** | **Descripción** | **Quién puede ejecutarla** |
 |------------|-----------------|----------------------------|
-| **Invitar Super-Admin** | Enviar invitación por email | Cualquier Super-Admin activo |
-| **Reactivar Super-Admin** | Activar cuenta suspendida | Cualquier Super-Admin activo |
-| **Suspender Super-Admin** | Suspender temporalmente acceso | Cualquier Super-Admin activo |
-| **Revocar acceso** | Eliminar permanentemente acceso | Cualquier Super-Admin activo |
-| **Ver auditoría** | Consultar logs de actividad | Cualquier Super-Admin activo |
+| **Invitar Admin** | Enviar invitación por email | Cualquier Admin activo |
+| **Reactivar Admin** | Activar cuenta suspendida | Cualquier Admin activo |
+| **Suspender Admin** | Suspender temporalmente acceso | Cualquier Admin activo |
+| **Revocar acceso** | Eliminar permanentemente acceso | Cualquier Admin activo |
+| **Ver auditoría** | Consultar logs de actividad | Cualquier Admin activo |
 
 #### Restricciones de Auto-Gestión
 
-- **Un Super-Admin NO puede suspenderse a sí mismo**
-- **Un Super-Admin NO puede revocarse acceso a sí mismo**
-- **Un Super-Admin SÍ puede ver su propia auditoría**
+- **Un Admin NO puede suspenderse a sí mismo**
+- **Un Admin NO puede revocarse acceso a sí mismo**
+- **Un Admin SÍ puede ver su propia auditoría**
 
 ## Flujo de Invitación y Registro
 
@@ -62,10 +62,10 @@ La **Configuración de Accesos y Control** permite a los Super-Administradores g
 #### Paso 1: Crear Invitación
 
 ```
-Super-Admin → [Invitar Nuevo Super-Admin]
+Administrador → [Invitar Nuevo Admin]
 ├── Ingresa email del invitado
 ├── Sistema valida email único
-├── Sistema verifica límite de 6 Super-Admins
+├── Sistema verifica límite de 6 Admins
 └── Sistema genera token de invitación único
 ```
 
@@ -131,10 +131,10 @@ Formulario de Vinculación:
 
 ## Estados y Gestión de Accesos
 
-### Estados de Super-Administrador
+### Estados de Administrador
 
 **ACTIVO**
-- **Descripción:** Super-Admin con acceso completo al Backoffice
+- **Descripción:** Admin con acceso completo al Backoffice
 - **Restricciones:** No puede auto-suspenderse o auto-revocar acceso
 
 **REVOCADO**
@@ -159,15 +159,15 @@ REVOCADO → [Nueva invitación] → INVITADO
 
 - **Detección**: 90 días sin acceso al Backoffice
 - **Acción**: Auto-suspensión temporal
-- **Notificación**: Email al usuario y otros Super-Admins
-- **Recuperación**: Reactivación por otro Super-Admin
+- **Notificación**: Email al usuario y otros Admins
+- **Recuperación**: Reactivación por otro Admin
 
 #### Actividades Sospechosas
 
 - **Múltiples intentos de acceso fallidos**
 - **Acceso desde ubicaciones inusuales**
 - **Modificaciones masivas en corto tiempo**
-- **Acción**: Suspensión automática y alerta a otros Super-Admins
+- **Acción**: Suspensión automática y alerta a otros Admins
 
 ## Auditoría y Trazabilidad
 
@@ -178,7 +178,7 @@ REVOCADO → [Nueva invitación] → INVITADO
 | **Categoría** | **Eventos Registrados** |
 |---------------|-------------------------|
 | **Acceso** | Login exitoso/fallido, logout, sesión expirada |
-| **Gestión de Usuarios** | Invitar, activar, suspender, revocar Super-Admins |
+| **Gestión de Usuarios** | Invitar, activar, suspender, revocar Admins |
 | **Configuración** | Cambios en información general, organigrama, documentos |
 | **Sistema** | Cambios en configuraciones críticas, integraciones |
 | **Seguridad** | Intentos de acceso no autorizado, cambios de contraseña |
@@ -202,7 +202,7 @@ REVOCADO → [Nueva invitación] → INVITADO
 
 ### Panel Principal de Accesos
 
-#### Vista de Lista de Super-Administradores
+#### Vista de Lista de Administradores
 
 Imagen de accesos y control
 
@@ -231,21 +231,21 @@ Imagen de dashboard de auditoría
 
 ### Validaciones de Negocio
 
-#### Límite de Super-Administradores
+#### Límite de Administradores
 
-- **Restricción**: Se establece un máximo de 6 Super-Administradores activos de forma simultánea para mantener un control estricto sobre los roles con mayores privilegios.
+- **Restricción**: Se establece un máximo de 6 Administradores activos de forma simultánea para mantener un control estricto sobre los roles con mayores privilegios.
 - **Validación**: Antes de poder enviar una nueva invitación para este rol, el sistema verifica automáticamente que el número de administradores activos no exceda el límite establecido.
 - **Excepción**: Las cuentas que han sido suspendidas o cuyas invitaciones fueron revocadas no se contabilizan en este límite, permitiendo reemplazos sin demoras.
 
 #### Email Único
 
-- **Restricción**: Cada dirección de correo electrónico solo puede estar asociada a una única cuenta de Super-Administrador, garantizando que cada cuenta pertenezca a una identidad única.
+- **Restricción**: Cada dirección de correo electrónico solo puede estar asociada a una única cuenta de Administrador, garantizando que cada cuenta pertenezca a una identidad única.
 - **Validación**: El sistema comprueba la unicidad del email tanto al momento de enviar una invitación como en el paso final de activación de la cuenta.
 - **Caso especial**: Si una cuenta es eliminada, la dirección de email asociada queda en un período de enfriamiento y solo podrá ser reutilizada para una nueva cuenta después de 30 días.
 
 #### Auto-Gestión
 
-- **Restricción**: Un Super-Administrador no puede realizar acciones críticas sobre su propia cuenta, como suspenderla o revocar sus propios privilegios, para prevenir bloqueos accidentales o maliciosos.
+- **Restricción**: Un Administrador no puede realizar acciones críticas sobre su propia cuenta, como suspenderla o revocar sus propios privilegios, para prevenir bloqueos accidentales o maliciosos.
 - **Validación**: El sistema verifica que el identificador del usuario que realiza la acción no sea el mismo que el de la cuenta afectada antes de ejecutar operaciones críticas.
 - **Excepción**: Esta restricción no aplica a la gestión de información personal; el usuario sí puede modificar sus propios datos o cambiar su contraseña libremente.
 

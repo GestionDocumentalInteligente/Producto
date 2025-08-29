@@ -41,7 +41,7 @@ roles + permissions (Sistema RBAC)
 | **Gestionar Usuarios** | Dar de alta, baja o activar/desactivar usuarios | UPDATE `users` SET `is_active` = true/false | Solo Titulares (`head_user_id`) |
 | **Ver Estructura Organizacional** | Consultar departments y sectors | SELECT FROM `departments` JOIN `sectors` | Según permisos en `user_roles` |
 | **Buscar Personal** | Localizar usuarios específicos | SELECT FROM `users` WHERE `full_name` LIKE o `email` = | Según permisos |
-| **Asignar Responsables** | Designar head de department | UPDATE `departments` SET `head_user_id` = | Super Admin o según permisos |
+| **Asignar Responsables** | Designar head de department | UPDATE `departments` SET `head_user_id` = | Administrador o según permisos |
 | **Gestionar Jerarquías** | Definir niveles de autoridad | Usar tabla `ranks` con `rank_id` en departments | Admin del sistema |
 
 ## 3. Entidades Principales del Sistema

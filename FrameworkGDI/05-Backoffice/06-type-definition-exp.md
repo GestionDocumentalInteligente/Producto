@@ -2,7 +2,7 @@
 
 ## 1. Propósito de la Sección
 
-La Configuración de Expedientes permite a los Super-Administradores definir y personalizar los parámetros fundamentales para la creación, gestión y tramitación de expedientes electrónicos dentro del sistema GDI. El objetivo es adaptar el comportamiento del módulo GDI-EXPEDIENTES a las necesidades específicas de cada municipalidad.
+La Configuración de Expedientes permite a los Administradores definir y personalizar los parámetros fundamentales para la creación, gestión y tramitación de expedientes electrónicos dentro del sistema GDI. El objetivo es adaptar el comportamiento del módulo GDI-EXPEDIENTES a las necesidades específicas de cada municipalidad.
 
 ### Objetivos principales:
 
@@ -27,7 +27,7 @@ Estos campos definen la identidad única del tipo de expediente y no pueden ser 
 
 ### 2.2 Parámetros de Comportamiento y Permisos (Modificables)
 
-Estos campos definen la lógica de negocio del expediente y pueden ser ajustados por un Super-Administrador.
+Estos campos definen la lógica de negocio del expediente y pueden ser ajustados por un Administrador.
 
 | **Parámetro** | **Descripción y Uso** | **Validaciones / Opciones** |
 |---------------|----------------------|------------------------------|
@@ -164,7 +164,7 @@ GDI incluye plantillas basadas en los expedientes más comunes de la administrac
 
 ### 5.2 Personalización de Plantillas
 
-Al seleccionar una plantilla, el Super-Administrador puede ajustar:
+Al seleccionar una plantilla, el Administrador puede ajustar:
 
 - **Reparticiones habilitadas**: Cambiar qué reparticiones pueden crear el expediente
 - **Repartición caratuladora**: Modificar qué repartición será la administradora y númere el expediente

@@ -2,7 +2,7 @@
 
 ## Propósito de la Sección
 
-La **Configuración de Integraciones** permite a los Super-Administradores conectar GDI con servicios externos que potencian y amplían las capacidades del sistema. Esta sección funciona como un **hub centralizado** donde se pueden activar, configurar y monitorear todas las conexiones con sistemas terceros.
+La **Configuración de Integraciones** permite a los Administradores conectar GDI con servicios externos que potencian y amplían las capacidades del sistema. Esta sección funciona como un **hub centralizado** donde se pueden activar, configurar y monitorear todas las conexiones con sistemas terceros.
 
 ### Objetivos principales:
 
