@@ -12,9 +12,9 @@ GDI va más allá del expediente tradicional, rompiendo con la lógica lineal de
 
 | **Funcionalidad** | **Descripción** |
 |-------------------|------------------|
-| **Creación de Expedientes** | Iniciación de nuevos expedientes, seleccionando el tipo de expediente de un catálogo predefinido y definiendo el motivo e iniciador (interno o externo) |
+| **Creación de Expedientes** | Iniciación de nuevos expedientes. Este proceso completa los campos `reference`, `template_id` y `admin_department_id` en la tabla `records` para registrar el motivo, la plantilla utilizada y la repartición responsable. |
 | **Generación de Carátula** | Creación automática de un documento PDF inicial con los datos principales del expediente |
-| **Vinculación de Documentos** | Asociación de documentos existentes al expediente, incluyendo la capacidad de subsanar documentos |
+| **Vinculación de Documentos** | Asociación de documentos existentes al expediente. Técnicamente, esta acción añade una nueva entrada al JSON del campo `linked_documents` en la tabla `records`, asegurando la trazabilidad. |
 | **Gestión de Tareas y Asignaciones** | Asignación y solicitud de acciones a sectores dentro del expediente |
 | **Seguimiento del Historial de Acciones** | Registro y visualización cronológica de todos los movimientos y solicitudes dentro del expediente y chat del expediente |
 | **Consulta Inteligente con Asistente AI** | Interacción conversacional para obtener resúmenes, listar tareas pendientes y consultar datos específicos del expediente |

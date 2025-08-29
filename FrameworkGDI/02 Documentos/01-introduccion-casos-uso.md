@@ -27,7 +27,21 @@ El sistema implementa una **separación clara** entre documentos en proceso y do
 **`document_draft`** → Documentos en creación, edición y firma  
 **`official_documents`** → Documentos finalizados con validez legal
 
+---
 
+## 📖 Diccionario de Campos Clave: Documentos
+
+Para entender mejor el ciclo de vida de un documento, estos son algunos de los campos más importantes de la base de datos y lo que representan para el negocio:
+
+*   **`document_draft.status`**: Representa la etapa exacta del ciclo de vida del documento (`Borrador`, `Enviado a Firmar`, `Firmado`, etc.) y es lo que determina qué acciones puede o no puede hacer un usuario en la pantalla.
+
+*   **`document_draft.pad_id`**: Es el identificador técnico que permite que varios usuarios editen el mismo documento a la vez en tiempo real. Es el corazón de la funcionalidad colaborativa.
+
+*   **`document_signers.is_numerator`**: Este campo booleano (`true`/`false`) es crucial porque marca al firmante que tiene la responsabilidad final de oficializar el documento y asignarle un número. No es un firmante más, es quien cierra el proceso.
+
+*   **La diferencia entre `created_by` y `sent_by`**: Es importante distinguirlos para la auditoría. `created_by` es el autor intelectual del borrador, mientras que `sent_by` es el usuario que toma la responsabilidad de iniciar formalmente el circuito de firmas (pueden ser personas distintas).
+
+---
 
 ## 🔄 Estados del Documento - Implementación Real
 

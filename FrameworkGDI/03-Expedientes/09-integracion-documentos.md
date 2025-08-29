@@ -8,7 +8,8 @@ El Módulo Expedientes mantiene una integración estrecha con el Módulo Documen
 
 - **Búsqueda de documentos existentes**: El sistema permite buscar documentos ya creados en GDI por número oficial, tipo, o contenido
 
-- **Vinculación sin duplicación**: Los documentos mantienen su integridad y versionado original
+- **Vinculación sin duplicación**: Los documentos mantienen su integridad y versionado original.
+    *   **Detalle Técnico**: Esta vinculación se registra en el campo `records.linked_documents` (tipo JSONB) del expediente, almacenando el `document_id` del documento oficial (`official_documents.document_id`) junto con metadatos de vinculación.
 
 - **Referencia cruzada**: Los documentos vinculados mantienen referencia al expediente en sus metadatos
 
