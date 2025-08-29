@@ -142,11 +142,15 @@ La configuración del tipo de firma es crucial para determinar la validez legal 
 
 | **Tipo de Firma** | **Validez Legal** | **Complejidad** | **Uso Recomendado** | **Proceso** |
 |-------------------|-------------------|-----------------|---------------------|-------------|
-| Digital todos | Máxima | Alta | Decretos, Resoluciones (actos de alta importancia) | Cada firmante debe tener y usar un certificado digital válido |
+| Digital todos | Máxima | Alta | Decretos, Resoluciones (actos de alta importancia) | Cada firmante debe tener y usar un certificado válido |
 | Digital solo numerador | Alta | Media | Disposiciones, Dictámenes, Pliegos (responsabilidad legal en una autoridad) | Solo el último firmante (Numerador) usa certificado digital; los demás usan credenciales GDI |
 | Electrónica todos | Media | Baja | Comunicaciones, informes, documentos operativos | Firma con credenciales GDI para todos los firmantes |
 
-## 6. Impacto en el Sistema y Validaciones
+## 6. Relación con la Base de Datos
+
+Las definiciones de tipos de documento configuradas en el Backoffice se persisten en la base de datos, principalmente en la tabla `Documentos` (o tablas relacionadas como `TiposDocumento` si existe una tabla específica para la definición de tipos). Cada parámetro (`tipo_documento`, `acronimo`, `nombre_documento`, `descripcion`, `habilitado_en`, `reparticiones_especificas`, `tipo_firma`, `ultimo_numero_papel`) corresponde a un campo o conjunto de campos dentro de estas tablas, asegurando la integridad y persistencia de la configuración. Para más detalles sobre la estructura de la base de datos, consulte la documentación en `06-DataBase/Documentos.md`.
+
+## 7. Impacto en el Sistema y Validaciones
 
 ### 6.1 Validaciones y Restricciones del Sistema
 

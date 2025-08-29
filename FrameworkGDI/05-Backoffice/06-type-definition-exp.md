@@ -172,7 +172,11 @@ Al seleccionar una plantilla, el Administrador puede ajustar:
 - **Motivo**: Personalizar la descripción según políticas locales
 - **Campos no editables**: Acrónimo y tipo permanecen fijos para mantener compatibilidad
 
-## 6. Nomenclatura y Numeración de IDs
+## 6. Relación con la Base de Datos
+
+Las definiciones de tipos de expediente configuradas en el Backoffice se persisten en la base de datos, principalmente en la tabla `record_templates`. Cada parámetro de configuración (`tipo_de_expediente`, `acronimo`, `motivo_del_expediente`, `tipo_de_inicio`, `reparticiones_habilitadas`, `seleccion_multiple`, `reparticion_caratuladora`, `reparticion_especifica`) se mapea a un campo o conjunto de campos dentro de esta tabla (`type_name`, `acronym`, `description`, `creation_channel`, `enabled_departments`, `filing_department_id`), asegurando la integridad y persistencia de la configuración. Para más detalles sobre la estructura de la base de datos, consulte la documentación en `06-DataBase/Tablas Expediente/Expediente.md`.
+
+## 7. Nomenclatura y Numeración de IDs
 
 ### 6.1 Formato Estándar de Numeración
 

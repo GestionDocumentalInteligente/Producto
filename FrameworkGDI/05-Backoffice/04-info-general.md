@@ -12,11 +12,11 @@ Este apartado agrupa los datos básicos que definen legal y administrativamente 
 
 | **Campo en Pantalla** | **Descripción** | **Ejemplo** | **Reglas y Validaciones** |
 |----------------------|-----------------|-------------|---------------------------|
-| **Tipo de entidad** | Define el contexto legal y administrativo del organismo. | Municipio | Campo de selección (dropdown o texto fijo). |
-| **Nombre de la ciudad** | El nombre oficial completo del ente/ecosistema. | Municipalidad de Terranova | Texto libre. Campo obligatorio. |
-| **Acrónimo** | Sigla o código corto que identifica a la entidad en la numeración de documentos y expedientes. | MDT | Texto corto (ej. 3-5 caracteres). Único en el sistema. |
-| **Domicilio fiscal** | Campo de búsqueda de direcciones autocompletado. Permite seleccionar la dirección legal principal de la entidad de forma estandarizada, utilizando un servicio de geolocalización. | Avenida del Centro 1234 | No es texto libre. Valida y estructura la dirección (calle, número, ciudad, país). |
-| **Nro. Identificación Tributaria** | El identificador fiscal de la entidad (CUIT, RUC, etc., según el país). | 01010101010101 | Formato numérico. |
+| **Tipo de entidad** | Define el contexto legal y administrativo del organismo. | Municipio | Campo de selección (dropdown o texto fijo). (posible `municipalities.type` o campo similar) |
+| **Nombre de la ciudad** | El nombre oficial completo del ente/ecosistema. | Municipalidad de Terranova | Texto libre. Campo obligatorio. (`municipalities.name`) |
+| **Acrónimo** | Sigla o código corto que identifica a la entidad en la numeración de documentos y expedientes. | MDT | Texto corto (ej. 3-5 caracteres). Único en el sistema. (`municipalities.acronym`) |
+| **Domicilio fiscal** | Campo de búsqueda de direcciones autocompletado. Permite seleccionar la dirección legal principal de la entidad de forma estandarizada, utilizando un servicio de geolocalización. | Avenida del Centro 1234 | No es texto libre. Valida y estructura la dirección (calle, número, ciudad, país). (`municipalities_settings.adress`) |
+| **Nro. Identificación Tributaria** | El identificador fiscal de la entidad (CUIT, RUC, etc., según el país). | 01010101010101 | Formato numérico. (`municipalities.tax_identifier`) |
 
 ## 3. Identidad Visual
 
@@ -26,11 +26,11 @@ Esta sección personaliza la apariencia de GDI para que coincida con la imagen d
 
 | **Campo en Pantalla** | **Descripción** | **Especificaciones Técnicas** |
 |----------------------|-----------------|-------------------------------|
-| **Logo Institucional** | El logo principal que aparecerá en la esquina superior de la interfaz y en todos los documentos oficiales. | Formato: PNG, JPG, GIF. Tamaño Máx: 5MB. Se recomienda PNG con fondo transparente. |
-| **Color Institucional** | El color primario de la marca, usado en botones, enlaces y elementos destacados de la interfaz. | Selector de color con código hexadecimal (ej. #3A3A9A). |
-| **Isologo Institucional** | Una versión compacta o alternativa del logo, a menudo sin texto (el puro símbolo). Puede usarse en áreas donde el logo completo no cabe. | Formato: PNG, JPG, GIF. Tamaño Máx: 5MB. |
-| **Imagen portada** | Imagen de fondo o bienvenida que se muestra en pantallas de inicio de sesión o en procesos de incorporación de nuevos usuarios. | Formato: PNG, JPG, GIF. Tamaño Máx: 5MB. |
-| **Frase anual (opcional)** | Un lema o frase que se puede incluir en los encabezados de los documentos, a menudo relacionado con el año en curso. | Texto libre. Su uso se define en las plantillas de documentos. |
+| **Logo Institucional** | El logo principal que aparecerá en la esquina superior de la interfaz y en todos los documentos oficiales. | Formato: PNG, JPG, GIF. Tamaño Máx: 5MB. Se recomienda PNG con fondo transparente. (`municipalities_settings.logo_id`) |
+| **Color Institucional** | El color primario de la marca, usado en botones, enlaces y elementos destacados de la interfaz. | Selector de color con código hexadecimal (ej. #3A3A9A). (`municipalities_settings.primary_color`) |
+| **Isologo Institucional** | Una versión compacta o alternativa del logo, a menudo sin texto (el puro símbolo). Puede usarse en áreas donde el logo completo no cabe. | Formato: PNG, JPG, GIF. Tamaño Máx: 5MB. (`municipalities_settings.isologo_id`) |
+| **Imagen portada** | Imagen de fondo o bienvenida que se muestra en pantallas de inicio de sesión o en procesos de incorporación de nuevos usuarios. | Formato: PNG, JPG, GIF. Tamaño Máx: 5MB. (`municipalities_settings.cover_image_id`) |
+| **Frase anual (opcional)** | Un lema o frase que se puede incluir en los encabezados de los documentos, a menudo relacionado con el año en curso. | Texto libre. Su uso se define en las plantillas de documentos. (`municipalities_settings.annual_slogan`) |
 
 ## 4. Flujo de Configuración y Validaciones
 

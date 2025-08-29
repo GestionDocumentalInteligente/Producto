@@ -229,22 +229,17 @@ POST /api/backoffice/usuarios/carga-masiva
 
 ## Estructura de Base de Datos
 
+La estructura organizacional del sistema GDI se persiste en varias tablas de la base de datos, diseñadas para reflejar la jerarquía de municipalidades, reparticiones, sectores y usuarios. A continuación, se resumen las tablas principales involucradas en el módulo de Organigrama. Para una descripción detallada de cada tabla, incluyendo sus columnas y relaciones, consulte el documento `06-DataBase/Organigrama.md`.
+
 ### Tablas Principales
 
-#### Tabla: reparticiones
-Tabla SQL de reparticiones
-
-#### Tabla: sectores
-Tabla SQL de sectores
-
-#### Tabla: usuarios
-Tabla SQL de usuarios
-
-#### Tabla: usuario_sectores (relación many-to-many)
-Tabla SQL de usuario_sectores
-
-#### Tabla: reparticion_titulares
-Tabla SQL de reparticion_titulares
+- **`municipalities`**: Almacena la información de cada municipio o entidad que utiliza la plataforma. Es el nivel más alto de la jerarquía.
+- **`departments`**: Define las reparticiones, secretarías o direcciones que componen la estructura principal del municipio.
+- **`sectors`**: Representa las subdivisiones o equipos de trabajo dentro de una repartición.
+- **`users`**: Almacena la información de todos los usuarios del sistema, vinculándolos a la estructura organizacional y al sistema de autenticación.
+- **`ranks`**: Define los niveles jerárquicos o rangos funcionales (ej. Intendente, Secretario, Director) para asignarlos a las reparticiones y controlar permisos.
+- **`department_heads`**: (Implícita en `departments.head_user_id` o una tabla de relación si es many-to-many) Relaciona usuarios con las reparticiones de las que son titulares.
+- **`user_sectors`**: (Relación many-to-many) Asigna usuarios a uno o varios sectores.
 
 ## API Endpoints
 

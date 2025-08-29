@@ -1,6 +1,6 @@
 # 🔄 Flujos de Gestión del Organigrama - Módulo GDI
 
-Este documento detalla los flujos operativos para la gestión de la estructura organizacional en GDI, incluyendo la administración de usuarios, reparticiones y sectores.
+Este documento detalla los flujos operativos para la gestión de la estructura organizacional en GDI, incluyendo la administración de usuarios, reparticiones y sectores. Complementa la documentación funcional del Backoffice de Organigrama (`05-Backoffice/08-orgranigrama.md`) y se apoya en el modelo de datos detallado en `06-DataBase/Organigrama.md`.
 
 ## 1. Flujo de Configuración Inicial del Organigrama
 
