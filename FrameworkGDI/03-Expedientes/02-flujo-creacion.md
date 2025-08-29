@@ -4,6 +4,8 @@ El proceso de creación de un expediente en GDI está diseñado para ser intuiti
 
 ## 3.1 Inicio y Configuración (Tipo, Motivo, Iniciador)
 
+🎨 **Flujo en Figma:** [Crear expediente](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=6802-17580&t=xkPc1JncRGCA4nzR-4)
+
 ### Inicio de la Creación
 
 El usuario inicia el proceso seleccionando el Tipo de Expediente desde un catálogo predefinido (campo Dropdown). Esta selección es obligatoria y depende de la configuración de tipos de expediente definida por el administrador en el Backoffice.
@@ -26,6 +28,8 @@ Se ingresa un Motivo (campo Textarea) que justifica la creación del expediente.
 
 ### 3. Determinación del Tipo de Inicio
 
+🎨 **Flujo en Figma:** [Determinación del Tipo de Inicio](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=7202-8420&t=xkPc1JncRGCA4nzR-4)
+
 El usuario define el Tipo de Inicio del expediente (campo Tab selector), seleccionando entre "Municipalidad" o "Vecino" (Trámite Interno o Externo). Esta elección es clave porque condiciona qué datos deben completarse a continuación:
 
 ![Selector Iniciador](../assets/images/exp/selector_iniciador.png)
@@ -43,6 +47,8 @@ El usuario define el Tipo de Inicio del expediente (campo Tab selector), selecci
 Los campos Nro de Identificación Fiscal (CUIT, CUIL) del solicitante y Nombre o Razón Social del Iniciador no se solicitan al usuario, ya que la información del iniciador se obtiene directamente del usuario interno que caratula.
 
 ## 3.2 Generación Automática de Carátula (con firma automática)
+
+🎨 **Flujo en Figma:** [Generación de Carátula](https://www.figma.com/design/QfYxAIYk97ZzvIU411ryLh/GDI---Expedientes?node-id=7202-8421&t=xkPc1JncRGCA4nzR-4)
 
 Una vez completados los datos requeridos, el sistema genera automáticamente la carátula del expediente en formato PDF, consolidando toda la información inicial ingresada.
 
